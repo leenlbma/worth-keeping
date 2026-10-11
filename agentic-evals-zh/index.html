@@ -300,5 +300,6 @@ var links=[].slice.call(document.querySelectorAll('nav a')),secs=links.map(funct
 function up(){var y=window.scrollY+120,c=0;secs.forEach(function(e,i){if(e.offsetTop<=y)c=i});links.forEach(function(a,i){a.classList.toggle('on',i==c)});var a=links[c];if(a&&a.parentNode.scrollWidth>a.parentNode.clientWidth){a.parentNode.scrollLeft=a.offsetLeft-60}}
 window.addEventListener('scroll',up,{passive:true});up();})();
 </script>
+<a id="wk-back" href="../" style="position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:99999;font:13px/1 -apple-system,'PingFang SC','Noto Sans SC',sans-serif;padding:9px 13px;border-radius:99px;background:rgba(20,22,27,.82);color:#f08060;border:1px solid rgba(240,128,96,.45);text-decoration:none;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)">← 值得留下</a>
 </body>
 </html>

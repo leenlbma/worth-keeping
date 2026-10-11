@@ -177,4 +177,5 @@ function upd(){let k=0;const y=120;D.forEach((d,i)=>{if(d.getBoundingClientRect(
  segs.forEach((s,i)=>s.classList.toggle('on',i+1===k));cur.innerHTML=k?`<b>${k}/39</b>${names[k-1]}`:'<b>目录</b>点色条或右侧按钮跳转'}
 addEventListener('scroll',upd,{passive:true});upd();
 if(location.hash.match(/^#c\d+$/)){const i=+location.hash.slice(2);if(D[i-1])setTimeout(()=>go(i),50)}
-addEventListener('beforeprint',()=>D.forEach(d=>d.open=true));</script></body></html>
+addEventListener('beforeprint',()=>D.forEach(d=>d.open=true));</script><a id="wk-back" href="../" style="position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:99999;font:13px/1 -apple-system,'PingFang SC','Noto Sans SC',sans-serif;padding:9px 13px;border-radius:99px;background:rgba(20,22,27,.82);color:#f08060;border:1px solid rgba(240,128,96,.45);text-decoration:none;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)">← 值得留下</a>
+</body></html>

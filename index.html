@@ -1,5 +1,169 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>值得留下 · worth-keeping</title>
-<style>body{font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif;background:#0f1115;color:#e8e8e8;max-width:720px;margin:0 auto;padding:32px 20px}h1{margin:0 0 8px}p{color:#9aa0a6;line-height:1.7}a{color:#f08060}li{margin:14px 0;line-height:1.6}small{color:#7a8088}</style></head><body>
-<h1>值得留下</h1><p>看过觉得有价值的内容，整理成可以直接打开的可视化页面。</p>
-<ul><li><a href="sun-yuchen-ai-youth/">对话孙宇晨：年轻人如何抓住 AI 时代的机会？</a><br><small>播客 4 小时 22 分，按 39 章逐章整理。2026-10-09</small></li><li><a href="agentic-evals-zh/">【译】Agentic evals：如何判断 AI 智能体有没有把事办成，下次还能不能办成</a><br><small>原文作者 Sergii Makarevych（<a href="https://x.com/sermakarevich/status/2108942010123968804">X 原文</a>），中文全文翻译。2026-10-11</small></li></ul>
-<p><small>内容为个人整理，语音识别可能有误，观点属于嘉宾本人，不构成医疗或投资建议。</small></p></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>值得留下 · worth-keeping</title>
+<meta name="description" content="看过、觉得值得留下的内容，整理成可以直接打开的页面。">
+<meta name="color-scheme" content="light dark">
+<!--
+  如何添加一条新内容：
+  1. 把整理好的页面放到仓库的新文件夹，例如 my-new-entry/index.html
+  2. 在下面 <script id="entries"> 的 JSON 数组最前面加一个对象：
+     { "id":"my-new-entry", "type":"播客|译文|报告|文章", "title":"标题", "desc":"一两句简介",
+       "date":"2026-10-12", "author":"作者/来源", "source_url":"原文链接(可留空)",
+       "path":"my-new-entry/", "length":"阅读约 20 分钟", "tags":["AI"] }
+  3. 在 README.md 的目录里加一行，提交并推送到 main，约 1 分钟后生效。
+  类型(type)出现几种，顶部筛选就自动出现几个。
+-->
+<style>
+:root{
+  --bg:#f6f1e7;--surface:#fffdf8;--ink:#1d1b18;--mute:#6b645a;--line:#e3dccd;--accent:#c4472a;--accent-ink:#fff;--chip:#ece5d6;--shadow:0 1px 2px rgba(60,40,10,.06),0 8px 24px -12px rgba(60,40,10,.18);
+}
+:root[data-theme=dark]{
+  --bg:#0f1115;--surface:#171a20;--ink:#ece8e1;--mute:#9a968d;--line:#2a2e36;--accent:#f08060;--accent-ink:#1a0e08;--chip:#1f232b;--shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -14px rgba(0,0,0,.7);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme=light]){
+    --bg:#0f1115;--surface:#171a20;--ink:#ece8e1;--mute:#9a968d;--line:#2a2e36;--accent:#f08060;--accent-ink:#1a0e08;--chip:#1f232b;--shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -14px rgba(0,0,0,.7);
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.serif{font-family:"Songti SC","Noto Serif SC","Noto Serif CJK SC","Source Han Serif SC",Georgia,"Times New Roman",serif}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+header{padding:28px 0 8px}
+.top{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--mute);letter-spacing:.08em;text-transform:uppercase}
+.top .brand{display:flex;align-items:center;gap:8px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--accent)}
+#theme{all:unset;cursor:pointer;width:40px;height:40px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);color:var(--ink);background:var(--surface);transition:transform .15s}
+#theme:active{transform:scale(.92)}
+#theme:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1{font-size:clamp(44px,13vw,84px);line-height:1.05;margin:44px 0 6px;letter-spacing:.02em;font-weight:700}
+.en{font-size:14px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;font-weight:600}
+.tag{font-size:18px;color:var(--mute);max-width:36em;margin:18px 0 22px}
+.stats{display:flex;gap:28px;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:13px;color:var(--mute)}
+.stats b{display:block;font-size:22px;color:var(--ink);font-weight:600;line-height:1.2}
+.tools{position:sticky;top:0;z-index:5;background:var(--bg);padding:14px 0 10px;margin-top:8px}
+.search{position:relative}
+.search input{width:100%;font:inherit;font-size:16px;padding:12px 16px 12px 42px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);-webkit-appearance:none}
+.search input::placeholder{color:var(--mute)}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--mute)}
+.chips{display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{all:unset;cursor:pointer;white-space:nowrap;padding:7px 15px;border-radius:99px;background:var(--chip);color:var(--ink);font-size:14px;transition:background .15s,transform .15s}
+.chip:active{transform:scale(.95)}
+.chip[aria-pressed=true]{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.grid{display:grid;grid-template-columns:1fr;gap:18px;padding:12px 0 8px;list-style:none;margin:0}
+@media(min-width:700px){.grid{grid-template-columns:1fr 1fr;gap:22px}}
+.card{position:relative;display:flex;flex-direction:column;height:100%;background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);transition:transform .2s ease,border-color .2s}
+@media(hover:hover){.card:hover{transform:translateY(-3px);border-color:var(--accent)}.card:hover .arrow{transform:translateX(4px)}}
+.card:active{transform:scale(.985)}
+.card h2 a{text-decoration:none;color:inherit}.card h2 a::after{content:"";position:absolute;inset:0;z-index:1}
+.card h2 a:focus-visible{outline:none}.card:has(h2 a:focus-visible){outline:2px solid var(--accent);outline-offset:3px}
+.cover{position:relative;aspect-ratio:16/8;overflow:hidden}
+.cover svg{display:block;width:100%;height:100%}
+.badge{position:absolute;left:14px;top:14px;font-size:12px;font-weight:600;letter-spacing:.08em;padding:4px 11px;border-radius:99px;background:rgba(255,255,255,.92);color:#1d1b18}
+.body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card h2{font-size:19px;line-height:1.4;margin:0;font-weight:700}
+.card p{margin:0;color:var(--mute);font-size:14.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.meta{margin-top:auto;padding-top:10px;display:flex;align-items:center;flex-wrap:wrap;gap:2px 6px;font-size:12.5px;color:var(--mute)}
+.meta span{white-space:nowrap}.meta span+span:not(.arrow)::before{content:"·";margin-right:6px}
+.meta .arrow{margin-left:auto;color:var(--accent);font-size:20px;line-height:1;transition:transform .2s}
+.src{position:relative;z-index:2;font-size:12.5px;padding:0 18px 16px}
+.src a{color:var(--accent);text-underline-offset:3px;display:inline-block;padding:6px 0}
+.empty{padding:40px 0;text-align:center;color:var(--mute)}
+footer{margin-top:40px;padding:26px 0 48px;border-top:1px solid var(--line);font-size:13px;color:var(--mute);line-height:1.8}
+footer p{margin:0 0 6px}
+footer .sig{margin-top:14px;color:var(--ink);opacity:.7}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media(prefers-reduced-motion:no-preference){.card{animation:in .5s ease both}@keyframes in{from{transform:translateY(8px)}}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="top"><div class="brand"><span class="dot"></span>worth-keeping</div>
+  <button id="theme" aria-label="切换明暗主题"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button></div>
+  <h1 class="serif">值得留下</h1>
+  <div class="en">A private reading vault</div>
+  <p class="tag">看过、觉得有价值的内容，都整理成可以直接打开的页面，留在这里。</p>
+  <div class="stats"><div><b id="n">0</b>条内容</div><div><b id="k">0</b>种类型</div><div><b id="u">-</b>最近更新</div></div>
+</header>
+
+<div class="tools">
+  <label class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+  <input id="q" type="search" placeholder="搜索标题、作者、标签" aria-label="搜索内容" autocomplete="off"></label>
+  <div class="chips" id="chips" role="group" aria-label="按类型筛选"></div>
+</div>
+
+<main><ul class="grid" id="grid"></ul><div class="empty" id="empty" hidden>没有找到匹配的内容。</div></main>
+
+<footer>
+  <p>这里是个人学习笔记。部分内容来自语音识别，可能有错字，或错误的人名、数字，引用前请对照原内容。</p>
+  <p>观点属于原作者或嘉宾本人，不构成医疗或投资建议。</p>
+  <p>译文的版权属于原作者，仅作学习交流；原作者希望下架，会立即删除（请到 <a href="https://github.com/leenlbma/worth-keeping/issues">GitHub issue</a> 留言）。</p>
+  <p class="sig"><a href="https://github.com/leenlbma/worth-keeping">leenlbma/worth-keeping</a></p>
+</footer>
+</div>
+
+<script id="entries" type="application/json">
+[
+  {"id":"agentic-evals-zh","type":"译文","title":"【译】Agentic evals：如何判断 AI 智能体有没有把事办成，下次还能不能办成","desc":"评判智能体要看它改了什么，而不是说了什么。从 Level 0 到 8 的评测体系，附工具对比与 15 条要点。中文全文翻译。","date":"2026-10-11","author":"Sergii Makarevych","source_url":"https://x.com/sermakarevich/status/2108942010123968804","path":"agentic-evals-zh/","length":"阅读约 35 分钟","tags":["AI","智能体","评测"]},
+  {"id":"sun-yuchen-ai-youth","type":"播客","title":"对话孙宇晨：年轻人如何抓住 AI 时代的机会？","desc":"4 小时 22 分的长访谈，按 39 章逐章整理：一句话结论、带时间的要点、示意图和金句，点击可跳到视频对应位置。","date":"2026-10-09","author":"Alan Shao 频道","source_url":"https://www.youtube.com/watch?v=0Z-vhBvBmUY","path":"sun-yuchen-ai-youth/","length":"时长 4 小时 22 分","tags":["AI","访谈","健康"]}
+]
+</script>
+
+<script>
+(function(){
+  var E=JSON.parse(document.getElementById('entries').textContent).sort(function(a,b){return b.date.localeCompare(a.date)});
+  var grid=document.getElementById('grid'),chips=document.getElementById('chips'),q=document.getElementById('q'),empty=document.getElementById('empty');
+  var cur='全部';
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function hash(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+  function rnd(seed){var x=seed||1;return function(){x^=x<<13;x>>>=0;x^=x>>17;x^=x<<5;x>>>=0;return x/4294967296}}
+  function cover(e){
+    var h=hash(e.id),r=rnd(h),hue=Math.floor(r()*360),hue2=(hue+40+Math.floor(r()*60))%360;
+    var bg='hsl('+hue+',38%,26%)',a='hsl('+hue2+',70%,68%)',b='hsl('+hue+',60%,80%)';
+    var s='<svg viewBox="0 0 320 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="160" fill="'+bg+'"/>';
+    var kind=h%3,i;
+    if(kind===0){for(i=0;i<9;i++){var rr=20+i*17;s+='<circle cx="'+(60+r()*30+i*22)+'" cy="'+(80+(r()-.5)*30)+'" r="'+rr+'" fill="none" stroke="'+(i%2?a:b)+'" stroke-opacity="'+(.15+r()*.4)+'" stroke-width="'+(1+r()*2)+'"/>'}}
+    else if(kind===1){for(i=0;i<22;i++){var w=4+r()*10,hh=20+r()*110;s+='<rect x="'+(i*15+4)+'" y="'+(160-hh)+'" width="'+w+'" height="'+hh+'" rx="2" fill="'+(i%3?b:a)+'" fill-opacity="'+(.2+r()*.5)+'"/>'}}
+    else{for(i=0;i<7;i++){s+='<path d="M-10 '+(20+i*22)+' Q 80 '+(r()*160)+' 160 '+(20+i*22)+' T 330 '+(10+i*24)+'" fill="none" stroke="'+(i%2?a:b)+'" stroke-opacity="'+(.25+r()*.5)+'" stroke-width="'+(1.5+r()*2.5)+'"/>'}}
+    var ch=Array.from(e.title.replace(/^【.】/,''))[0]||'';
+    s+='<text x="300" y="148" text-anchor="end" font-size="96" font-weight="700" fill="#fff" fill-opacity=".14" font-family="Songti SC,Noto Serif CJK SC,serif">'+esc(ch)+'</text></svg>';
+    return s;
+  }
+  function render(){
+    var t=q.value.trim().toLowerCase(),list=E.filter(function(e){
+      if(cur!=='全部'&&e.type!==cur)return false;
+      if(!t)return true;
+      return [e.title,e.desc,e.author,e.type].concat(e.tags||[]).join(' ').toLowerCase().indexOf(t)>-1;
+    });
+    grid.innerHTML=list.map(function(e,i){
+      return '<li><article class="card" style="animation-delay:'+(i*60)+'ms"><div class="cover">'+cover(e)+'<span class="badge">'+esc(e.type)+'</span></div><div class="body"><h2 class="serif"><a href="'+esc(e.path)+'">'+esc(e.title)+'</a></h2><p>'+esc(e.desc)+'</p><div class="meta"><span>'+esc(e.date)+'</span><span>'+esc(e.author)+'</span>'+(e.length?'<span>'+esc(e.length)+'</span>':'')+'<span class="arrow" aria-hidden="true">→</span></div></div>'+(e.source_url?'<div class="src"><a href="'+esc(e.source_url)+'" rel="noopener">查看原文 ↗</a></div>':'')+'</article></li>';
+    }).join('');
+    empty.hidden=list.length>0;
+  }
+  var types=['全部'];E.forEach(function(e){if(types.indexOf(e.type)<0)types.push(e.type)});
+  chips.innerHTML=types.map(function(t){return '<button class="chip" aria-pressed="'+(t===cur)+'">'+esc(t)+'</button>'}).join('');
+  chips.addEventListener('click',function(ev){var b=ev.target.closest('.chip');if(!b)return;cur=b.textContent;[].forEach.call(chips.children,function(c){c.setAttribute('aria-pressed',c===b)});render()});
+  q.addEventListener('input',render);
+  document.getElementById('n').textContent=E.length;
+  document.getElementById('k').textContent=types.length-1;
+  document.getElementById('u').textContent=E.length?E[0].date.slice(5).replace('-','/'):'-';
+  var root=document.documentElement,btn=document.getElementById('theme');
+  try{var m=location.search.match(/theme=(light|dark)/);var sv=m?m[1]:localStorage.getItem('wk-theme');if(sv)root.setAttribute('data-theme',sv)}catch(e){}
+  btn.addEventListener('click',function(){
+    var dark=root.getAttribute('data-theme')?root.getAttribute('data-theme')==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+    var n=dark?'light':'dark';root.setAttribute('data-theme',n);try{localStorage.setItem('wk-theme',n)}catch(e){}
+  });
+  render();
+})();
+</script>
+</body>
+</html>
