@@ -184,12 +184,23 @@ footer b{color:#F2E9DA;font-weight:500}
 .toc i{font-style:normal;font-family:var(--mono);font-size:10px;color:var(--verm);min-width:26px;letter-spacing:.04em}
 @media (max-width:700px){.toc ol{columns:1}}
 
+/* ---------- 图表全屏查看 ---------- */
+#zoom{position:fixed;inset:0;z-index:99998;background:rgba(12,10,8,.97);display:none}
+#zoom.on{display:block}
+#zoom .inner{position:absolute;inset:56px 10px 10px;overflow:auto;-webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;border-radius:8px;background:#FBF8F1}
+#zoom .inner svg{display:block;width:900px;height:auto}
+#zoom .close{all:unset;position:absolute;top:12px;right:12px;z-index:2;cursor:pointer;
+  padding:9px 15px;border-radius:99px;background:#FBF8F1;color:#151310;
+  font:13px/1 var(--sans);border:1px solid #D9D0C1}
+#zoom .hint{position:absolute;left:16px;top:19px;color:#9A9184;
+  font:11px/1 var(--mono);letter-spacing:.08em;z-index:2}
+
 /* ---------- responsive ---------- */
 @media (max-width:820px){
   figure.bleed{width:calc(100% - 24px);padding:0 12px}
-  .frame{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .frame svg{min-width:700px}
-  figure.bleed figcaption::before{content:"图表可左右滑动　";color:var(--faint)}
+  .frame{cursor:zoom-in}
+  figure.bleed figcaption::before{content:"⤢ 轻点图表可放大　";color:var(--faint)}
 }
 @media (max-width:760px){
   .col{max-width:none}
@@ -912,6 +923,28 @@ footer b{color:#F2E9DA;font-weight:500}
   document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
   setTimeout(function(){ document.querySelectorAll('.rv:not(.in)').forEach(function(el){ el.classList.add('in'); }); }, 2500);
 
+  // 手机端：轻点图表 → 全屏查看（可拖动、可双指缩放）
+  var zoom = document.createElement('div');
+  zoom.id = 'zoom';
+  zoom.innerHTML = '<div class="hint">双指缩放 · 拖动查看</div><button class="close" type="button">关闭</button><div class="inner"></div>';
+  document.body.appendChild(zoom);
+  var zinner = zoom.querySelector('.inner');
+  function closeZoom(){ zoom.classList.remove('on'); document.body.style.overflow = ''; }
+  zoom.querySelector('.close').addEventListener('click', closeZoom);
+  zoom.addEventListener('click', function(e){ if(e.target === zoom) closeZoom(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeZoom(); });
+  document.querySelectorAll('figure .frame').forEach(function(f){
+    f.addEventListener('click', function(){
+      if(!window.matchMedia('(max-width: 820px)').matches) return;
+      var svg = f.querySelector('svg'); if(!svg) return;
+      zinner.innerHTML = '';
+      zinner.appendChild(svg.cloneNode(true));
+      zoom.classList.add('on');
+      document.body.style.overflow = 'hidden';
+      zinner.scrollTop = 0; zinner.scrollLeft = 0;
+    });
+  });
+
   // 页内锚点：不依赖原生 hash 滚动（smooth 下会静默失效）
   function jumpTo(id){
     var t = document.getElementById(id);
@@ -941,6 +974,33 @@ footer b{color:#F2E9DA;font-weight:500}
 })();
 </script>
 
-<a id="wk-back" href="../" style="position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:99999;font:13px/1 -apple-system,'PingFang SC','Noto Sans SC',sans-serif;padding:9px 13px;border-radius:99px;background:rgba(20,22,27,.82);color:#f08060;border:1px solid rgba(240,128,96,.45);text-decoration:none;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)">← 值得留下</a>
+<style>
+/* 阅读库回链：移动端缩小、下滑隐藏；层级低于图表放大层 */
+#wk-back{z-index:9000;transition:opacity .25s,transform .25s}
+@media (max-width:820px){
+  #wk-back{padding:7px 11px;font-size:12px;opacity:.9}
+  body{padding-bottom:56px}
+}
+</style>
+<a id="wk-back" href="../" style="position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:9000;font:13px/1 -apple-system,'PingFang SC','Noto Sans SC',sans-serif;padding:9px 13px;border-radius:99px;background:rgba(20,22,27,.82);color:#f08060;border:1px solid rgba(240,128,96,.45);text-decoration:none;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)">← 值得留下</a>
+<script>
+(function(){
+  var b=document.getElementById('wk-back'); if(!b) return;
+  var last=window.pageYOffset||0, hide=false;
+  function setHide(v){
+    if(v===hide) return; hide=v;
+    b.style.opacity = v?'0':'';
+    b.style.pointerEvents = v?'none':'';
+  }
+  window.addEventListener('scroll',function(){
+    var z=document.getElementById('zoom');
+    if(z && z.classList.contains('on')){ setHide(true); return; }
+    var y=window.pageYOffset||0;
+    if(y>last+8) setHide(true);
+    else if(y<last-8) setHide(false);
+    last=y;
+  },{passive:true});
+})();
+</script>
 </body>
 </html>
