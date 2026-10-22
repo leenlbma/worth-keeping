@@ -12,7 +12,7 @@
   2. 在下面 <script id="entries"> 的 JSON 数组最前面加一个对象：
      { "id":"my-new-entry", "type":"播客|译文|报告|文章", "title":"标题", "desc":"一两句简介",
        "date":"2026-10-12", "author":"作者/来源", "source_url":"原文链接(可留空)",
-       "path":"my-new-entry/", "length":"阅读约 20 分钟", "tags":["AI"] }
+       "path":"my-new-entry/", "length":"阅读约 20 分钟", "tags":["AI"], "cover":"可选，封面图路径" }
   3. 在 README.md 的目录里加一行，提交并推送到 main，约 1 分钟后生效。
   类型(type)出现几种，顶部筛选就自动出现几个。
 -->
@@ -66,7 +66,7 @@ h1{font-size:clamp(44px,13vw,84px);line-height:1.05;margin:44px 0 6px;letter-spa
 .card h2 a{text-decoration:none;color:inherit}.card h2 a::after{content:"";position:absolute;inset:0;z-index:1}
 .card h2 a:focus-visible{outline:none}.card:has(h2 a:focus-visible){outline:2px solid var(--accent);outline-offset:3px}
 .cover{position:relative;aspect-ratio:16/8;overflow:hidden}
-.cover svg{display:block;width:100%;height:100%}
+.cover svg,.cover img{display:block;width:100%;height:100%;object-fit:cover}
 .badge{position:absolute;left:14px;top:14px;font-size:12px;font-weight:600;letter-spacing:.08em;padding:4px 11px;border-radius:99px;background:rgba(255,255,255,.92);color:#1d1b18}
 .body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
 .card h2{font-size:19px;line-height:1.4;margin:0;font-weight:700}
@@ -113,7 +113,7 @@ footer .sig{margin-top:14px;color:var(--ink);opacity:.7}
 
 <script id="entries" type="application/json">
 [
-  {"id":"ai-refactor-legacy","type":"文章","title":"存量代码的 AI 重构：“改错了，谁先知道？”","desc":"21 个公开案例复盘 AI 在存量代码迁移里的实际效果：哪些环节真的提效、哪些仍然靠人。含 10 张数据图与一条起步路径。","date":"2026-10-22","author":"本站原创","source_url":"","path":"ai-refactor-legacy/","length":"阅读约 35 分钟","tags":["AI","重构","工程"]},
+  {"id":"ai-refactor-legacy","type":"文章","title":"存量代码的 AI 重构：“改错了，谁先知道？”","desc":"21 个公开案例复盘 AI 在存量代码迁移里的实际效果：哪些环节真的提效、哪些仍然靠人。含 10 张数据图与一条起步路径。","date":"2026-10-22","author":"本站原创","source_url":"","path":"ai-refactor-legacy/","cover":"ai-refactor-legacy/cover.jpg","length":"阅读约 35 分钟","tags":["AI","重构","工程"]},
   {"id":"agentic-evals-zh","type":"译文","title":"【译】Agentic evals：如何判断 AI 智能体有没有把事办成，下次还能不能办成","desc":"评判智能体要看它改了什么，而不是说了什么。从 Level 0 到 8 的评测体系，附工具对比与 15 条要点。中文全文翻译。","date":"2026-10-11","author":"Sergii Makarevych","source_url":"https://x.com/sermakarevich/status/2108942010123968804","path":"agentic-evals-zh/","length":"阅读约 35 分钟","tags":["AI","智能体","评测"]},
   {"id":"sun-yuchen-ai-youth","type":"播客","title":"对话孙宇晨：年轻人如何抓住 AI 时代的机会？","desc":"4 小时 22 分的长访谈，按 39 章逐章整理：一句话结论、带时间的要点、示意图和金句，点击可跳到视频对应位置。","date":"2026-10-09","author":"Alan Shao 频道","source_url":"https://www.youtube.com/watch?v=0Z-vhBvBmUY","path":"sun-yuchen-ai-youth/","length":"时长 4 小时 22 分","tags":["AI","访谈","健康"]}
 ]
@@ -128,6 +128,7 @@ footer .sig{margin-top:14px;color:var(--ink);opacity:.7}
   function hash(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
   function rnd(seed){var x=seed||1;return function(){x^=x<<13;x>>>=0;x^=x>>17;x^=x<<5;x>>>=0;return x/4294967296}}
   function cover(e){
+    if(e.cover) return '<img src="'+esc(e.cover)+'" alt="" loading="lazy">';
     var h=hash(e.id),r=rnd(h),hue=Math.floor(r()*360),hue2=(hue+40+Math.floor(r()*60))%360;
     var bg='hsl('+hue+',38%,26%)',a='hsl('+hue2+',70%,68%)',b='hsl('+hue+',60%,80%)';
     var s='<svg viewBox="0 0 320 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="160" fill="'+bg+'"/>';
