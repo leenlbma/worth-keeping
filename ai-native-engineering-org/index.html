@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>深度解读：Building an AI-native engineering org</title>
+    <style>
+      :root {
+        --paper: #f6f2e9;
+        --paper-2: #efe8d8;
+        --ink: #20241d;
+        --ink-soft: #4c5245;
+        --ink-faint: #7a7f70;
+        --line: #d8d0ba;
+        --route: #b4551d;
+        --route-soft: #e8c9a8;
+        --moss: #2e5d3a;
+        --moss-soft: #dbe7d6;
+        --card: #fbf8f1;
+        --card-line: #ddd4bd;
+        --warn-bg: #f3ead3;
+        --shadow: 0 1px 2px rgba(32, 36, 29, .06), 0 8px 24px -12px rgba(32, 36, 29, .18);
+        --serif: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+        --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --paper: #14170f;
+          --paper-2: #1a1e14;
+          --ink: #ece7d8;
+          --ink-soft: #b9bca9;
+          --ink-faint: #8b8f7e;
+          --line: #333827;
+          --route: #e07f3e;
+          --route-soft: #5c3d22;
+          --moss: #7fb98a;
+          --moss-soft: #243525;
+          --card: #1c2015;
+          --card-line: #373c28;
+          --warn-bg: #26230f;
+          --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+        }
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--sans);
+        font-size: 16px;
+        line-height: 1.75;
+        -webkit-font-smoothing: antialiased;
+      }
+      .topo { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+      .topo svg { width: 100%; height: 100%; display: block; }
+      .topo path { fill: none; stroke: var(--ink); stroke-width: 1; opacity: .07; }
+      .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; position: relative; }
+      main.wrap, footer .wrap { position: relative; }
+      section { padding: 56px 0 8px; }
+      h1, h2, h3 { font-family: var(--serif); font-weight: 700; line-height: 1.35; margin: 0; }
+      h2 { font-size: 27px; letter-spacing: .01em; }
+      h3 { font-size: 19px; }
+      p { margin: 0 0 14px; }
+      a { color: var(--route); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+      .en { font-family: Georgia, "Times New Roman", serif; }
+
+      /* ---------- hero ---------- */
+      header.hero { position: relative; padding: 64px 0 44px; border-bottom: 1px solid var(--line); overflow: hidden; }
+      .hero .wrap { z-index: 1; }
+      .kicker {
+        display: inline-flex; align-items: center; gap: 10px;
+        font-size: 13px; letter-spacing: .18em; color: var(--route);
+        font-weight: 600; margin-bottom: 20px;
+      }
+      .kicker::before { content: ""; width: 26px; height: 1px; background: var(--route); }
+      .hero h1 { font-size: clamp(30px, 5.4vw, 46px); line-height: 1.28; margin-bottom: 8px; }
+      .hero h1 .en { font-style: italic; font-weight: 600; }
+      .hero .lede { font-size: 18px; color: var(--ink-soft); max-width: 40em; margin-top: 14px; }
+      .author-row { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 28px; font-size: 14px; color: var(--ink-soft); }
+      .author-row b { color: var(--ink); font-weight: 600; }
+      .post-stats {
+        display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+        background: var(--line); border: 1px solid var(--line); border-radius: 10px;
+        overflow: hidden; margin-top: 30px;
+      }
+      .post-stats div { background: var(--card); padding: 14px 16px; }
+      .post-stats .num { font-family: var(--serif); font-size: 24px; font-weight: 700; line-height: 1.2; font-variant-numeric: tabular-nums; }
+      .post-stats .lbl { font-size: 12.5px; color: var(--ink-faint); margin-top: 2px; }
+      .ratio-note {
+        margin-top: 14px; font-size: 14.5px; color: var(--ink-soft);
+        border-left: 3px solid var(--route); padding: 2px 0 2px 14px;
+      }
+      .ratio-note b { color: var(--route); }
+
+      /* ---------- thesis ---------- */
+      .thesis {
+        margin-top: 34px; background: var(--card); border: 1px solid var(--card-line);
+        border-radius: 12px; padding: 26px 28px; box-shadow: var(--shadow);
+      }
+      .thesis .t-label { font-size: 12.5px; letter-spacing: .16em; color: var(--moss); font-weight: 700; margin-bottom: 10px; }
+      .thesis p { font-family: var(--serif); font-size: 19.5px; line-height: 1.65; margin: 0; }
+      .thesis p b { color: var(--route); font-weight: 700; }
+
+      .sec-head { margin-bottom: 8px; }
+      .sec-head .part { font-size: 12.5px; letter-spacing: .16em; color: var(--route); font-weight: 700; margin-bottom: 8px; }
+      .sec-sub { color: var(--ink-soft); font-size: 15.5px; max-width: 42em; }
+
+      /* ---------- route strip + timeline ---------- */
+      .route-map {
+        margin: 26px 0 6px; border: 1px dashed var(--route-soft); border-radius: 12px;
+        padding: 16px 18px 12px; background: var(--paper-2);
+        font-family: Georgia, "Times New Roman", serif; font-style: italic;
+        font-size: 13.5px; color: var(--ink-soft);
+      }
+      .route-map .pathline { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+      .route-map .place { white-space: nowrap; }
+      .route-map .arrow { color: var(--route); font-style: normal; }
+      .route-map .end { color: var(--route); font-weight: 700; font-style: normal; font-family: var(--serif); }
+
+      .timeline { position: relative; margin-top: 30px; padding-left: 30px; }
+      .timeline::before {
+        content: ""; position: absolute; left: 7px; top: 10px; bottom: 10px; width: 2px;
+        background-image: linear-gradient(var(--route) 55%, transparent 45%);
+        background-size: 2px 12px; opacity: .55;
+      }
+      .stop { position: relative; padding: 0 0 30px; }
+      .stop::before {
+        content: ""; position: absolute; left: -30px; top: 7px; width: 12px; height: 12px;
+        border-radius: 50%; background: var(--paper); border: 3px solid var(--route);
+      }
+      .stop .when { font-size: 13px; font-weight: 700; letter-spacing: .1em; color: var(--route); }
+      .stop h3 { margin: 2px 0 6px; }
+      .stop h3 .en { font-style: italic; font-weight: 600; color: var(--ink-soft); font-size: 16px; }
+      .stop p { color: var(--ink-soft); font-size: 15.5px; margin-bottom: 8px; max-width: 44em; }
+      .chip {
+        display: inline-block; font-size: 13px; font-weight: 600; color: var(--moss);
+        background: var(--moss-soft); border-radius: 999px; padding: 2px 11px; margin: 2px 6px 2px 0;
+        font-variant-numeric: tabular-nums;
+      }
+      .chip b { font-family: var(--serif); }
+
+      /* ---------- stat wall ---------- */
+      .statwall { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 26px; }
+      .stat {
+        background: var(--card); border: 1px solid var(--card-line); border-radius: 10px;
+        padding: 16px 16px 13px;
+      }
+      .stat .big { font-family: var(--serif); font-size: 27px; font-weight: 700; line-height: 1.15; color: var(--ink); font-variant-numeric: tabular-nums; }
+      .stat .big .arr { color: var(--route); }
+      .stat .cap { font-size: 13px; color: var(--ink-soft); margin-top: 5px; line-height: 1.5; }
+
+      /* ---------- chart card ---------- */
+      .chart-card {
+        background: var(--card); border: 1px solid var(--card-line); border-radius: 12px;
+        padding: 22px 24px; margin-top: 22px; box-shadow: var(--shadow);
+      }
+      .chart-card h3 { margin-bottom: 4px; }
+      .chart-card .note { font-size: 13.5px; color: var(--ink-faint); margin-bottom: 14px; }
+      figure { margin: 0; }
+      figcaption { font-size: 13px; color: var(--ink-faint); margin-top: 10px; }
+      .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--ink-soft); margin: 10px 0 4px; }
+      .legend i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+      .toggle { display: inline-flex; border: 1px solid var(--card-line); border-radius: 999px; overflow: hidden; margin: 6px 0 16px; }
+      .toggle button {
+        font: inherit; font-size: 14px; padding: 6px 18px; border: 0; cursor: pointer;
+        background: transparent; color: var(--ink-soft);
+      }
+      .toggle button[aria-pressed="true"] { background: var(--route); color: #fff; font-weight: 600; }
+      .toggle button:focus-visible { outline: 2px solid var(--route); outline-offset: 2px; }
+      .segbar { display: flex; height: 44px; border-radius: 8px; overflow: hidden; border: 1px solid var(--card-line); }
+      .segbar .seg {
+        display: flex; align-items: center; justify-content: center; color: #fff;
+        font-size: 13.5px; font-weight: 600; white-space: nowrap; overflow: hidden;
+        transition: width .7s cubic-bezier(.22,.8,.3,1); min-width: 0;
+      }
+      .seg-plan { background: #7a6a3f; }
+      .seg-build { background: var(--moss); }
+      .seg-review { background: #5d6b7a; }
+      @media (prefers-color-scheme: dark) {
+        .seg-plan { background: #a08b4e; }
+        .seg-review { background: #7d8ea0; }
+      }
+      .seg-meta { display: flex; flex-wrap: wrap; gap: 8px 26px; margin-top: 12px; font-size: 14.5px; }
+      .seg-meta b { font-family: var(--serif); font-variant-numeric: tabular-nums; }
+
+      /* ---------- insights ---------- */
+      .insight { border-top: 1px solid var(--line); padding: 26px 0 6px; margin-top: 26px; }
+      .insight:first-of-type { border-top: 0; margin-top: 10px; }
+      .insight .no { font-family: Georgia, serif; font-style: italic; color: var(--route); font-size: 15px; }
+      .insight h3 { margin: 4px 0 8px; font-size: 21px; }
+      .insight p { color: var(--ink-soft); max-width: 44em; }
+      .insight p b, .insight li b { color: var(--ink); }
+      .insight ul { margin: 0 0 14px; padding-left: 20px; color: var(--ink-soft); }
+      .insight li { margin-bottom: 6px; }
+      blockquote {
+        margin: 16px 0; padding: 14px 18px; background: var(--paper-2);
+        border-radius: 10px; font-family: var(--serif); font-size: 16.5px; line-height: 1.7;
+      }
+      blockquote .who { display: block; font-family: var(--sans); font-size: 13px; color: var(--ink-faint); margin-top: 6px; }
+
+      /* ---------- seniority / managers ---------- */
+      .levels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 22px; }
+      .level { background: var(--card); border: 1px solid var(--card-line); border-radius: 12px; padding: 20px; }
+      .level .lv { font-family: Georgia, serif; font-style: italic; font-size: 15px; color: var(--route); }
+      .level h3 { margin: 4px 0 8px; font-size: 20px; }
+      .level p { font-size: 14.5px; color: var(--ink-soft); margin: 0; }
+      .level .own { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--card-line); font-size: 13.5px; color: var(--ink-faint); }
+      .level .own b { color: var(--moss); font-weight: 600; }
+
+      .mgr { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; }
+      .mgr .m { background: var(--card); border: 1px solid var(--card-line); border-radius: 12px; padding: 20px 22px; }
+      .mgr .m .en { font-style: italic; color: var(--route); font-size: 15px; }
+      .mgr .m h3 { margin: 4px 0 8px; }
+      .mgr .m p { font-size: 14.5px; color: var(--ink-soft); margin: 0; }
+
+      /* ---------- judgment ---------- */
+      .judge { counter-reset: j; margin: 18px 0 0; padding-left: 0; }
+      .judge li { list-style: none; position: relative; padding: 0 0 18px 44px; }
+      .judge li::before {
+        counter-increment: j; content: counter(j, decimal-leading-zero);
+        position: absolute; left: 0; top: 2px; font-family: Georgia, serif; font-style: italic;
+        color: var(--route); font-size: 15px;
+      }
+      .judge li b { display: block; font-family: var(--serif); font-size: 17px; margin-bottom: 3px; }
+      .judge li span { color: var(--ink-soft); font-size: 15px; }
+
+      /* ---------- honesty note ---------- */
+      .honest {
+        background: var(--warn-bg); border: 1px solid var(--card-line); border-radius: 12px;
+        padding: 22px 24px; margin-top: 8px;
+      }
+      .honest h3 { margin-bottom: 10px; }
+      .honest ul { margin: 0; padding-left: 20px; color: var(--ink-soft); font-size: 15px; }
+      .honest li { margin-bottom: 6px; }
+
+      footer { border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0 48px; font-size: 14px; color: var(--ink-soft); }
+      footer .src { font-size: 15.5px; }
+      footer p { margin-bottom: 8px; }
+
+      .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+      .reveal.on { opacity: 1; transform: none; }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .reveal { opacity: 1; transform: none; transition: none; }
+        .segbar .seg { transition: none; }
+      }
+      @media (max-width: 640px) {
+        section { padding-top: 44px; }
+        .post-stats { grid-template-columns: repeat(2, 1fr); }
+        .statwall { grid-template-columns: repeat(2, 1fr); }
+        .levels, .mgr { grid-template-columns: 1fr; }
+        .thesis { padding: 20px; }
+        .thesis p { font-size: 17.5px; }
+        .chart-card { padding: 18px; }
+        .segbar .seg { font-size: 12px; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <header class="hero">
+      <div class="topo" aria-hidden="true">
+        <svg viewBox="0 0 900 420" preserveAspectRatio="xMidYMid slice">
+          <path d="M-40 90 C150 40, 300 150, 480 105 S 760 30, 960 110" />
+          <path d="M-40 140 C160 90, 320 200, 500 155 S 770 85, 960 165" />
+          <path d="M-40 195 C170 145, 330 255, 520 210 S 780 140, 960 220" />
+          <path d="M-40 255 C180 205, 340 310, 540 265 S 790 200, 960 280" />
+          <path d="M-40 320 C190 270, 350 370, 560 325 S 800 265, 960 345" />
+          <path d="M620 -30 C660 90, 600 200, 680 330 S 740 430, 720 470" />
+          <path d="M700 -30 C740 100, 690 210, 760 340" />
+        </svg>
+      </div>
+      <div class="wrap">
+        <div class="kicker">深度解读 · X ARTICLE</div>
+        <h1>当写代码不再是瓶颈<br /><span class="en">Building an AI-native engineering org</span></h1>
+        <p class="lede">一家小公司用九个月把软件交付全链路逐段交给 agent：人均产出涨了约 5 倍，回滚率没涨。然后他们发现，真正的问题刚刚开始——慢的不是手，是「决定做什么」。</p>
+        <div class="author-row">
+          <span>作者 <b>Sashank Gondala</b>（<a href="https://x.com/sgondala2" target="_blank" rel="noopener">@sgondala2</a>）</span>
+          <span><b>FurtherAI</b> 联合创始人 / CTO，前 Apple</span>
+          <span>发布于 <b>2026 年 10 月 29 日</b></span>
+        </div>
+        <div class="post-stats" role="group" aria-label="原文数据">
+          <div><div class="num">13.8 万</div><div class="lbl">浏览</div></div>
+          <div><div class="num">1,852</div><div class="lbl">收藏</div></div>
+          <div><div class="num">642</div><div class="lbl">点赞</div></div>
+          <div><div class="num">95</div><div class="lbl">转发</div></div>
+        </div>
+        <p class="ratio-note">收藏是点赞的近 <b>3 倍</b>——这篇文章是被当「操作手册」存下来的，不是当观点看的。下面这份解读，也按操作手册的标准来拆。</p>
+
+        <div class="thesis">
+          <div class="t-label">一句话核心</div>
+          <p>FurtherAI 的九个月证明了一件事：交付链路的每一段都可以被 agent 加速，但<b>瓶颈不会消失，只会漂移</b>——从写代码，漂到测试、评审、合并，最后漂到组织本身：谁来决定做什么、谁来为判断负责。</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+
+      <!-- ============ Part 1 ============ -->
+      <section>
+        <div class="sec-head">
+          <div class="part">PART 1 · 交付流程</div>
+          <h2>九个月，逐段重做交付链路</h2>
+        </div>
+        <p class="sec-sub">2026 年 1 月的起点：人均每天合并的代码变更数，此后增长约 <b>5 倍</b>，而回滚率始终压在 <b>0.5% 以下</b>。方法只有一句：每次加速一个环节，工作就堆到下一个环节——于是把全链路逐段过一遍。原文封面画的正是一张探险地图：从「写代码平原」出发，翻过「评审山脊」，终点是手写的「What to build next?」。这条路线，就是 Part 1 的全部内容。</p>
+
+        <div class="route-map" aria-hidden="true">
+          <div class="pathline">
+            <span class="place">THE PLAIN OF WRITING CODE</span><span class="arrow">→</span>
+            <span class="place">TESTING FLATS</span><span class="arrow">→</span>
+            <span class="place">REVIEW RIDGE</span><span class="arrow">→</span>
+            <span class="place">AUTO-MERGE SADDLE</span><span class="arrow">→</span>
+            <span class="place">THE DECISION NARROWS</span><span class="arrow">→</span>
+            <span class="end">What to build next?</span>
+          </div>
+        </div>
+
+        <div class="timeline">
+          <div class="stop reveal">
+            <div class="when">2026 年 1 月 · 起点</div>
+            <h3>先量出基线</h3>
+            <p>改造从度量开始：人均每天合并的变更数、回滚率。九个月后回头看，前者涨了约 5 倍，后者没动——速度的所有讨论，都建立在这两个数字上。</p>
+            <span class="chip">人均变更 <b>×5</b></span><span class="chip">回滚率 <b>&lt; 0.5%</b></span>
+          </div>
+
+          <div class="stop reveal">
+            <div class="when">3 月 · CODE</div>
+            <h3>代码：agent 写，工程师 steer</h3>
+            <p>agent 负责产出代码，工程师的角色变成掌舵——给方向、纠偏、验收。到这一步，几乎 100% 的变更都有 agent 参与。</p>
+            <span class="chip">agent 参与 <b>≈100%</b> 的变更</span>
+          </div>
+
+          <div class="stop reveal">
+            <div class="when">4 月 · TESTS</div>
+            <h3>测试：随代码一起写</h3>
+            <p>代码一快，测试立刻成为堆积点。对策是让 agent 随代码同步写测试，带测试的变更比例此后从 15% 涨到 91%。</p>
+            <span class="chip">带测试的变更 <b>15% → 91%</b></span>
+          </div>
+
+          <div class="stop reveal">
+            <div class="when">5 月 · REVIEW</div>
+            <h3>评审：AI 先审，人只看判断题</h3>
+            <p>AI 先过一遍绝大多数变更，人类评审者只处理需要判断的部分。评审从「逐行检查」变成「裁决分歧」。</p>
+            <span class="chip">AI 先审 <b>60% → 99%</b></span>
+          </div>
+
+          <div class="stop reveal">
+            <div class="when">6 月 · CI</div>
+            <h3>CI：并行化＋只跑受影响的用例</h3>
+            <p>测试量涨了，CI 时间不能跟着涨。测试并行化、只运行受影响的用例之后，同样 17 分钟能跑 20 倍的测试量。</p>
+            <span class="chip">同样 17 分钟，测试量 <b>×20</b></span>
+          </div>
+
+          <div class="stop reveal">
+            <div class="when">7 月 · BUG INTAKE</div>
+            <h3>报障入口：Slack 里 @ 一下</h3>
+            <p>在 Slack 里 @ClaudeTag 报 bug，它自动去重、建单、分派。报障从「写工单」变成「说句话」，现在 60% 的 bug 单由它创建。</p>
+            <span class="chip"><b>60%</b> 的 bug 单由 agent 建</span>
+          </div>
+
+          <div class="stop reveal">
+            <div class="when">8 月 · RULES</div>
+            <h3>规则：把老工程师脑子里的东西写成检查</h3>
+            <p>把「只有老工程师知道」的规则，变成每次 commit / PR 都跑的 Python 小检查：失败就阻断合并，并直接打印修复方法。规则从 0 条涨到 21 条。关键在于 agent 撞上检查会自己修好再走——这是下一步「无人合并」的前提。</p>
+            <span class="chip">自动检查 <b>0 → 21 条</b></span>
+          </div>
+
+          <div class="stop reveal">
+            <div class="when">8 月 · MERGING</div>
+            <h3>合并：低风险变更无人参与</h3>
+            <p>测试、自动检查、AI 评审三关全过，低风险变更自动合并。现在最多三分之一的变更，从提交到合并没有人类经手。</p>
+            <span class="chip">无人合并 <b>up to 1/3</b></span>
+          </div>
+
+          <div class="stop reveal">
+            <div class="when">9 月 · CODE CHANNELS</div>
+            <h3>入口前移：频道里描述，agent 开 PR</h3>
+            <p>在 Slack 开个频道、对 agent 描述想要的变更，它直接开 PR；多人可以在同一频道和同一个 agent 协作。团队重度使用 Devin 的 cloud sessions 承接这类工作。</p>
+            <span class="chip">Slack 频道 → <b>PR</b></span>
+          </div>
+
+          <div class="stop reveal">
+            <div class="when">贯穿全程 · AGENTS 接力</div>
+            <h3>自研 agent 查生产问题</h3>
+            <p>自研的 Poirot / Sherlock agents 负责查生产与 staging 问题，日志、指标、trace、只读数据库全部打通。链路是接力的：ClaudeTag 分诊 → Devin 干活 → Poirot 拉数据，agent 之间交接，而不是一个 agent 包办。</p>
+            <span class="chip">分诊 → 执行 → 拉数据，<b>三段接力</b></span>
+          </div>
+        </div>
+
+        <h3 style="margin-top:12px;">副作用：非工程师也开始 ship 代码</h3>
+        <p style="color:var(--ink-soft); max-width:44em;">当入口变成「在 Slack 里说句话」，写代码的人就不再只是工程师：设计师自 8 月以来合并了约 <b>50 个变更</b>（包括设计系统），部署和一线岗位也能在 Slack 里自己改 UI。交付链路的民主化，是这套改造没有预先设计、却最值得注意的结果。</p>
+
+        <div class="statwall" role="group" aria-label="Part 1 关键数字">
+          <div class="stat"><div class="big">×5</div><div class="cap">人均每天合并的变更数（1 月以来）</div></div>
+          <div class="stat"><div class="big">&lt; 0.5%</div><div class="cap">回滚率，提速全程没有涨</div></div>
+          <div class="stat"><div class="big">15% <span class="arr">→</span> 91%</div><div class="cap">带测试的变更占比</div></div>
+          <div class="stat"><div class="big">99%</div><div class="cap">变更由 AI 先审（此前 60%）</div></div>
+          <div class="stat"><div class="big">×20</div><div class="cap">同样 17 分钟 CI 能跑的测试量</div></div>
+          <div class="stat"><div class="big">60%</div><div class="cap">bug 单由 ClaudeTag 创建</div></div>
+          <div class="stat"><div class="big">21 条</div><div class="cap">自动规则检查，从 0 条长起来的</div></div>
+          <div class="stat"><div class="big">1/3</div><div class="cap">变更无人参与合并（上限）</div></div>
+        </div>
+      </section>
+
+      <!-- ============ cost ============ -->
+      <section>
+        <div class="sec-head">
+          <div class="part">PART 1 · 代价</div>
+          <h2>这笔账不是白赚的</h2>
+        </div>
+        <p class="sec-sub">夏天几个月，工程投入大量砸进测试和工具链，人均每月面向客户的变更数被压在 17–30 之间。直到 9 月才跳到 45，10 月按当前 pace 是 48。换句话说：这套改造先让你变慢，几个月后才开始还账。</p>
+
+        <div class="chart-card reveal">
+          <h3>人均每月面向客户的变更数</h3>
+          <p class="note">原文只给了夏季区间（17–30）与 9 月（45）、10 月 pace（48）；下图按区间呈现夏季，不虚构逐月数字。数据为作者自述。</p>
+          <figure>
+            <svg viewBox="0 0 640 250" width="100%" role="img" aria-label="柱状图：夏季人均面向客户变更数在 17 到 30 之间，9 月 45，10 月按 pace 48">
+              <g stroke="var(--line)" stroke-width="1">
+                <line x1="46" y1="30" x2="620" y2="30" />
+                <line x1="46" y1="85" x2="620" y2="85" />
+                <line x1="46" y1="140" x2="620" y2="140" />
+                <line x1="46" y1="195" x2="620" y2="195" />
+              </g>
+              <g fill="var(--ink-faint)" font-size="11" font-family="sans-serif" text-anchor="end">
+                <text x="40" y="199">0</text>
+                <text x="40" y="144">20</text>
+                <text x="40" y="89">40</text>
+                <text x="40" y="34">60</text>
+              </g>
+              <!-- summer range block: spans Jun-Aug, y for 30 = 112.25, for 17 = 148 -->
+              <rect x="80" y="112.25" width="300" height="82.75" fill="var(--route)" opacity="0.14" rx="4" />
+              <rect x="80" y="112.25" width="300" height="35.75" fill="var(--route)" opacity="0.4" rx="4" />
+              <text x="230" y="133" fill="var(--ink)" font-size="14" font-weight="700" font-family="Georgia, serif" text-anchor="middle">17 – 30</text>
+              <text x="230" y="172" fill="var(--ink-soft)" font-size="12.5" font-family="sans-serif" text-anchor="middle">夏季投入期（区间）</text>
+              <text x="230" y="216" fill="var(--ink-soft)" font-size="12.5" font-family="sans-serif" text-anchor="middle">夏季数月</text>
+              <!-- Sep / Oct bars: y = 195 - v*2.75 -->
+              <rect x="430" y="71.25" width="56" height="123.75" rx="4" fill="var(--moss)" />
+              <rect x="530" y="63" width="56" height="132" rx="4" fill="var(--moss)" />
+              <g fill="var(--ink)" font-size="14" font-weight="700" font-family="Georgia, serif" text-anchor="middle">
+                <text x="458" y="63">45</text>
+                <text x="558" y="55">48</text>
+              </g>
+              <g fill="var(--ink-soft)" font-size="12.5" font-family="sans-serif" text-anchor="middle">
+                <text x="458" y="216">9 月</text>
+                <text x="558" y="216">10 月（pace）</text>
+              </g>
+            </svg>
+            <figcaption>夏季的低点不是失败，是学费：测试与工具链的投入先行，客户向产出到 9 月才释放出来。</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ============ insights ============ -->
+      <section>
+        <div class="sec-head">
+          <div class="part">核心洞察</div>
+          <h2>三件值得单独拿出来讲的事</h2>
+        </div>
+
+        <div class="insight reveal">
+          <div class="no">Insight 01</div>
+          <h3>瓶颈漂移：全文方法论上最重要的一句话</h3>
+          <blockquote>「每次加速一个环节，工作就堆到下一个环节。」<span class="who">——原文的方法论原点（转述）</span></blockquote>
+          <p>这就是约束理论（Theory of Constraints）在 AI 工程组织里的现场版：系统的产出由瓶颈决定，优化非瓶颈环节只会制造堆积。FurtherAI 的九个月，本质上是一次<b>逐段寻找约束点</b>的练习——代码快了，约束移到测试；测试跟上了，移到评审；评审 AI 化了，移到合并规则；最后，约束移出交付链路，落到「决定做什么」上。对管理者的启发很直接：<b>先找到约束点，再投资源</b>，而不是全链路均匀用力。</p>
+        </div>
+
+        <div class="insight reveal">
+          <div class="no">Insight 02</div>
+          <h3>Tribal knowledge → 21 条规则：组织能力的公共化</h3>
+          <p>每个团队都有只存在于老工程师脑子里的规则（tribal knowledge）：口头传承、靠 review 时一句「这里不行」传递。FurtherAI 把它们写成<b>每次提交都跑的检查</b>——失败即阻断，并打印修复方法。两个细节决定了这件事的成败：</p>
+          <ul>
+            <li><b>检查自带修复说明</b>：规则不只是门禁，还是一次定向教学；</li>
+            <li><b>agent 能自己修</b>：撞上检查、读懂说明、改好再提交——没有这一条，就没有后面的无人合并。</li>
+          </ul>
+          <p>这是「隐性知识显性化」最教科书的一个案例：知识从个人资产变成组织资产，且以机器可执行的形态沉淀。它也解释了为什么 21 条这个数字虽小，却是全篇最硬的一块地基。</p>
+        </div>
+
+        <div class="insight reveal">
+          <div class="no">Insight 03</div>
+          <h3>瓶颈反转：规划＋评审的占比，从 40% 涨到 70%</h3>
+          <p>原文给了一个简化算术。一个 feature 原来要 10 天：3 天规划＋6 天构建＋1 天评审。构建提速 3.5 倍、规划与评审不变，总时长只缩短到约 5.7 天——<b>整体只快了 1.75 倍</b>。而规划＋评审在总耗时中的占比，从 40% 涨到 70%。</p>
+          <div class="chart-card" style="margin-top:18px;">
+            <h3>一个 feature 的 10 天，是怎么重新分配的</h3>
+            <p class="note">原文的简化模型：构建提速 3.5 倍，规划与评审速度不变。点「改造后」看占比如何翻转。</p>
+            <div class="toggle" role="group" aria-label="切换改造前后">
+              <button type="button" id="btnBefore" aria-pressed="true">改造前 · 10 天</button>
+              <button type="button" id="btnAfter" aria-pressed="false">改造后 · ≈5.7 天</button>
+            </div>
+            <div class="segbar" aria-hidden="true">
+              <div class="seg seg-plan" id="segPlan" style="width:30%">规划 3 天</div>
+              <div class="seg seg-build" id="segBuild" style="width:60%">构建 6 天</div>
+              <div class="seg seg-review" id="segReview" style="width:10%">评审</div>
+            </div>
+            <div class="legend">
+              <span><i style="background:#7a6a3f"></i>规划</span>
+              <span><i style="background:var(--moss)"></i>构建</span>
+              <span><i style="background:#5d6b7a"></i>评审</span>
+            </div>
+            <div class="seg-meta">
+              <span>总时长 <b id="metaTotal">10 天</b></span>
+              <span>整体提速 <b id="metaSpeed">—</b></span>
+              <span>规划＋评审占比 <b id="metaShare">40%</b></span>
+            </div>
+            <p style="font-size:14.5px; color:var(--ink-soft); margin:12px 0 0;">结论不是「构建不重要」，而是：当构建不再稀缺，组织的产能上限由<b>规划与评审的质量</b>决定。这与 Anthropic 就业报告里「机器等人类、注意力成为最后稀缺资源」的观察，是同一个判断的两种说法。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Part 2 ============ -->
+      <section>
+        <div class="sec-head">
+          <div class="part">PART 2 · 团队的变化</div>
+          <h2>瓶颈漂到组织这一侧之后</h2>
+        </div>
+        <p class="sec-sub">写代码快了，「决定做什么」没快。FurtherAI 的对策不是加管理层级，而是<b>把 ownership 往下推</b>：让工程师自己承担更多规划、执行与评审，并离客户更近——从理解客户问题，到交付、验证成功、为生产回归负责，全链路 own。随之而来的，是 seniority 定义的整体改写：衡量的轴，从技术深度换成「能端到端拥有多大的问题」。</p>
+
+        <div class="levels">
+          <div class="level reveal">
+            <div class="lv">Level · Junior</div>
+            <h3>初级工程师</h3>
+            <p>和 agent 一起构建，<b>且能判断它什么时候错了</b>。产出代码不再是门槛，检验产出才是。</p>
+            <div class="own">拥有的尺度：<b>单个任务的对错</b></div>
+          </div>
+          <div class="level reveal">
+            <div class="lv">Level · Senior</div>
+            <h3>高级工程师</h3>
+            <p>能规划和评审<b>自己的</b>工作——不再需要别人替他拆题、把关。</p>
+            <div class="own">拥有的尺度：<b>自己的完整工作流</b></div>
+          </div>
+          <div class="level reveal">
+            <div class="lv">Level · Staff</div>
+            <h3>Staff 工程师</h3>
+            <p>接住模糊问题，做 tradeoff，并 own 住那个<b>衡量成败的数字</b>。</p>
+            <div class="own">拥有的尺度：<b>一个模糊问题的结果</b></div>
+          </div>
+        </div>
+        <p style="color:var(--ink-soft); margin-top:16px; max-width:44em;">尤其 Junior 那一条值得玩味——「能判断 agent 什么时候错了」，意味着判断力从资深者的专利，变成了入行第一天的门槛。</p>
+
+        <h3 style="margin-top:34px;">对管理者的两条新要求</h3>
+        <div class="mgr">
+          <div class="m reveal">
+            <div class="en">Be in the work</div>
+            <h3>亲手在产品里</h3>
+            <p>像最终用户一样去 staging 上试功能，而不只是确认「代码被评审过」。目标仍然是培养能自己做决定的工程师——管理者只在需要判断的地方介入，其余时间，用产品本身校准自己的判断。</p>
+          </div>
+          <div class="m reveal">
+            <div class="en">Be more product-savvy</div>
+            <h3>要有产品主张</h3>
+            <p>写代码变便宜之后，「决定做什么」更贵了。管理者要有客户理解和产品判断，敢直接做产品决策；小的产品决策，不需要每个都经过 PM 和设计师。</p>
+          </div>
+        </div>
+        <p style="color:var(--ink-soft); margin-top:18px; max-width:44em;">原文的收束很诚实：过去大半年他们在解决「让工程师更快」，现在在解决「让整个组织跟上这个速度」——而后者，可能比自动化代码、测试和评审<b>更难</b>。（文末是 FurtherAI 招聘 EM / Director 的启事，这篇文章本身就是他们组织能力的一次展示。）</p>
+      </section>
+
+      <!-- ============ judgment ============ -->
+      <section>
+        <div class="sec-head">
+          <div class="part">解读者的判断</div>
+          <h2>这篇文章该怎么读</h2>
+        </div>
+        <ol class="judge">
+          <li>
+            <b>把它当操作手册，而不是宣言</b>
+            <span>收藏/点赞接近 3:1 说明读者也是这么用的。它的价值在颗粒度：每个环节给了起止数字、工具名和先后顺序，可以直接对照自己团队的链路逐段体检。</span>
+          </li>
+          <li>
+            <b>最可迁移的不是 agent，是那 21 条规则</b>
+            <span>Devin、ClaudeTag 各家有各家的买法；但「把 tribal knowledge 写成带修复说明的自动检查」不依赖任何特定工具，本周就能开始。给国内工程管理者的第一条借鉴：先盘一遍只存在于老工程师脑子里的规则。</span>
+          </li>
+          <li>
+            <b>先找约束点，再投资源</b>
+            <span>九个月的顺序本身就是方法论：他们从未同时改两个环节。多数团队的 AI 投入收效有限，往往不是工具不行，是钱花在了非瓶颈环节上，只制造了堆积。</span>
+          </li>
+          <li>
+            <b>Agent 接力比单个全能 agent 更现实</b>
+            <span>分诊（ClaudeTag）→ 执行（Devin）→ 拉数据（Poirot）的分工，是 multi-agent 编排落到日常运维的样子：每个 agent 只打通自己那一段的数据与权限，交接点清晰、可审计。</span>
+          </li>
+          <li>
+            <b>Seniority 的新轴，迟早会进入晋升评审</b>
+            <span>「能端到端拥有多大的问题」比「技术深度」更难评估，但它直接对应瓶颈反转后的稀缺能力。管理者现在就可以在心里换一把尺：你团队里谁能接住模糊问题，并 own 住结果数字？</span>
+          </li>
+        </ol>
+      </section>
+
+      <!-- ============ honesty ============ -->
+      <section>
+        <div class="honest reveal">
+          <h3>诚实注记：读这篇文章前先知道这些</h3>
+          <ul>
+            <li><b>单一样本。</b>FurtherAI 是一家小团队，它的链路、风险偏好与组织规模，未必能平移到大团队。</li>
+            <li><b>数字均为作者自述，未经第三方审计。</b>本页所有数字（5 倍、0.5%、91%、21 条等）都来自原文口径。</li>
+            <li><b>代价被如实写出，但容易被跳过。</b>夏季几个月面向客户的产出是被压住的（17–30 / 月），9 月才释放——改造有几个月的学费期。</li>
+            <li><b>结尾是招聘文。</b>叙事有动机：展示组织能力本身就是在招人。这不否定内容，但读者应知道作者的立场。</li>
+            <li>因此它不构成「所有团队都该这么干」的结论；它构成的是一份<b>可以逐段对照的参照系</b>。</li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <p class="src">原文：<a href="https://x.com/sgondala2/status/2115832070274723875" target="_blank" rel="noopener">Sashank Gondala《Building an AI-native engineering org》</a>（X Article，2026-10-29）</p>
+        <p>作者 Sashank Gondala（@sgondala2），FurtherAI 联合创始人 / CTO，前 Apple。本页为解读者的转述与判断，不是原文翻译；文中数字均为作者自述口径。</p>
+        <p>起因：原文是作者对 Will Larson（@Lethain）「如何考察工程管理者的 AI 技能」一串问题的展开——那串帖子收藏很多，于是写成长文。</p>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        // ---- before / after bottleneck toggle ----
+        var btnB = document.getElementById("btnBefore");
+        var btnA = document.getElementById("btnAfter");
+        var segPlan = document.getElementById("segPlan");
+        var segBuild = document.getElementById("segBuild");
+        var segReview = document.getElementById("segReview");
+        var metaTotal = document.getElementById("metaTotal");
+        var metaSpeed = document.getElementById("metaSpeed");
+        var metaShare = document.getElementById("metaShare");
+
+        function setState(after) {
+          btnB.setAttribute("aria-pressed", String(!after));
+          btnA.setAttribute("aria-pressed", String(after));
+          if (!after) {
+            segPlan.style.width = "30%"; segPlan.textContent = "规划 3 天";
+            segBuild.style.width = "60%"; segBuild.textContent = "构建 6 天";
+            segReview.style.width = "10%"; segReview.textContent = "评审";
+            metaTotal.textContent = "10 天";
+            metaSpeed.textContent = "—";
+            metaShare.textContent = "40%";
+          } else {
+            // total ~5.71 days: plan 3 (52.5%), build 1.71 (30%), review 1 (17.5%)
+            segPlan.style.width = "52.5%"; segPlan.textContent = "规划 3 天";
+            segBuild.style.width = "30%"; segBuild.textContent = "构建 ≈1.7 天";
+            segReview.style.width = "17.5%"; segReview.textContent = "评审";
+            metaTotal.textContent = "≈5.7 天";
+            metaSpeed.textContent = "仅 1.75×";
+            metaShare.textContent = "70%";
+          }
+        }
+        btnB.addEventListener("click", function () { setState(false); });
+        btnA.addEventListener("click", function () { setState(true); });
+
+        // ---- scroll reveal ----
+        var items = document.querySelectorAll(".reveal");
+        if (reduced || !("IntersectionObserver" in window)) {
+          items.forEach(function (el) { el.classList.add("on"); });
+        } else {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) { e.target.classList.add("on"); io.unobserve(e.target); }
+            });
+          }, { threshold: 0.12 });
+          items.forEach(function (el) { io.observe(el); });
+        }
+      })();
+    </script>
+  </body>
+</html>

@@ -15,6 +15,8 @@
   「看十年」2026 公开课精编：AI 刚进入第二阶段，"浏览器"还没出现。智能商业、AI 原生、智能复利、创智组织、战略生成，配示意图。
 
 ### 文章
+- [《Building an AI-native engineering org》深度解读](ai-native-engineering-org/)（2026-11-02）  
+  FurtherAI CTO 九个月实战：交付流程逐段重做、瓶颈从写代码移到做决定，附 seniority 重定义与管理者判断。
 - [存量代码的 AI 重构："改错了，谁先知道？"](ai-refactor-legacy/)（2026-10-22）  
   21 个公开案例复盘 AI 在存量代码迁移里的实际效果，附 10 张数据图。
 
