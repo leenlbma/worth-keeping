@@ -5,6 +5,8 @@
 在线浏览：https://leenlbma.github.io/worth-keeping/
 
 ## 目录
+- [阿里《AI Native 研发范式实践手册》可视化解读](ai-native-handbook/)：68 页手册精读：范式转折、三个业务案例、五大挑战、基础设施全景，附官方在线阅读与 PDF 入口（2026-11-02）
+
 - [存量代码的 AI 重构：“改错了，谁先知道？”](ai-refactor-legacy/)：21 个公开案例复盘 AI 在存量代码迁移里的实际效果，附 10 张数据图（2026-10-22）
 - [对话孙宇晨：年轻人如何抓住 AI 时代的机会？](sun-yuchen-ai-youth/)：播客 39 章逐章整理（2026-10-09）
 - [【译】Agentic evals：如何判断 AI 智能体有没有把事办成](agentic-evals-zh/)：原文作者 Sergii Makarevych，[X 原文](https://x.com/sermakarevich/status/2108942010123968804)，中文全文翻译（2026-10-11）
