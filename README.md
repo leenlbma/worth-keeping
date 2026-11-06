@@ -15,6 +15,8 @@
   「看十年」2026 公开课精编：AI 刚进入第二阶段，"浏览器"还没出现。智能商业、AI 原生、智能复利、创智组织、战略生成，配示意图。
 
 ### 文章
+- [Dan Koe：2027 年最赚钱的 AI 生意](dan-koe-2027-ai-business/)（2026-11-06）  
+  2027 年一个人能做的最赚钱的 AI 生意：为自己的品牌、或别人的品牌抓住注意力。11 节拆解与五阶段执行清单，附内容地图计算器。
 - [《Building an AI-native engineering org》深度解读](ai-native-engineering-org/)（2026-11-02）  
   FurtherAI CTO 九个月实战：交付流程逐段重做、瓶颈从写代码移到做决定，附 seniority 重定义与管理者判断。
 - [存量代码的 AI 重构："改错了，谁先知道？"](ai-refactor-legacy/)（2026-10-22）  

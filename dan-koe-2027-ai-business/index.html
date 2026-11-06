@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>Dan Koe：2027 年最赚钱的 AI 生意</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#f6f3ec; --surface:#faf8f1; --surface2:#ece5d3; --ink:#1c1a17; --ink2:#33302b; --muted:#6b655a; --faint:#8a8578;
+    --line:#d8d2c2; --line2:#c9c2b0;
+    --red:#8b2e2e; --green:#2e6f5e; --purple:#6b4c9a; --olive:#8a7a2e; --blue:#2e5a8b; --brick:#9a3b2e; --navy:#2e3a5c;
+    --t-green:#e4e9df; --t-blue:#e2e7f0; --t-pink:#f0e2de; --t-purple:#e7e2ef; --t-beige:#ece5d3;
+    --bar:#3f5da8; --bar-low:#b0a892;
+    --shadow:0 1px 0 rgba(0,0,0,.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#171512; --surface:#201d19; --surface2:#2a2620; --ink:#ece7db; --ink2:#d8d2c4; --muted:#a49c8c; --faint:#8f887a;
+      --line:#3a352c; --line2:#4a4438;
+      --red:#e08a7a; --green:#7fc4a8; --purple:#bda6e8; --olive:#d3c078; --blue:#8fb4dd; --brick:#e8957f; --navy:#9db1d8;
+      --t-green:#232b22; --t-blue:#222936; --t-pink:#2f2422; --t-purple:#2a2436; --t-beige:#2a2620;
+      --bar:#7d9bd6; --bar-low:#6f6a5c;
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Serif SC","Songti SC","STSong",serif;-webkit-font-smoothing:antialiased}
+  .sans{font-family:"Noto Sans SC","PingFang SC",sans-serif}
+  .progress{position:fixed;top:0;left:0;height:3px;background:var(--red);width:0;z-index:60}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px 56px}
+  /* header */
+  .masthead{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:"Noto Sans SC",sans-serif;font-size:13px;letter-spacing:3px;color:var(--faint);border-bottom:1px solid var(--line);padding:22px 0 14px}
+  h1{font-size:clamp(40px,7.2vw,80px);line-height:1.14;font-weight:900;letter-spacing:.5px;margin:30px 0 14px}
+  .lede{font-size:clamp(17px,2.4vw,21px);line-height:1.8;color:var(--ink2);max-width:820px}
+  .lede b{color:var(--ink)}
+  .one-line{margin:22px 0 0;padding:18px 20px;background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--red);font-size:17px;line-height:1.75}
+  .one-line b{color:var(--red)}
+  .keynums{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:22px 0 6px}
+  .keynum{background:var(--surface2);padding:18px 18px 14px}
+  .keynum .n{font-family:"Noto Sans SC",sans-serif;font-size:clamp(24px,4vw,36px);font-weight:900;line-height:1.15}
+  .keynum .l{font-family:"Noto Sans SC",sans-serif;font-size:14px;line-height:1.6;color:var(--muted);margin-top:6px}
+  /* sticky nav */
+  .toc{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 0;margin-top:26px}
+  .toc-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .toc button{font-family:"Noto Sans SC",sans-serif;font-size:14px;padding:8px 14px;border:1px solid var(--line2);background:var(--surface);color:var(--ink);cursor:pointer;border-radius:999px}
+  .toc button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink);font-weight:700}
+  .toc a{font-family:"Noto Sans SC",sans-serif;font-size:13.5px;color:var(--muted);text-decoration:none;padding:8px 4px}
+  .toc a:hover{color:var(--ink);text-decoration:underline}
+  /* parts */
+  .part-head{margin:52px 0 4px}
+  .part-head .pk{font-family:"Noto Sans SC",sans-serif;font-size:13px;letter-spacing:3px;color:var(--faint)}
+  .part-head h2{font-size:clamp(28px,4.5vw,42px);font-weight:900;line-height:1.25;margin:8px 0 8px}
+  .part-head p{font-size:16.5px;line-height:1.75;color:var(--muted);max-width:760px;margin:0}
+  section.chapter{display:grid;grid-template-columns:340px 1fr;gap:44px;padding:38px 0 34px;border-top:1px solid var(--line);scroll-margin-top:76px}
+  .kicker{font-family:"Noto Sans SC",sans-serif;font-size:14px;letter-spacing:2px;color:var(--faint);margin-bottom:12px}
+  section.chapter h3{font-size:clamp(30px,4.4vw,46px);line-height:1.22;font-weight:900;margin:0 0 18px}
+  .sec-body p{font-size:17.5px;line-height:1.85;margin:0 0 13px;color:var(--ink2)}
+  .sec-body p b{color:var(--ink)}
+  .dots{list-style:none;margin:0;padding:0}
+  .dots li{font-size:17px;line-height:1.75;margin-bottom:9px;padding-left:20px;position:relative;color:var(--ink2)}
+  .dots li::before{content:"•";position:absolute;left:0;color:var(--faint)}
+  .tail{font-size:17px;line-height:1.7;color:var(--muted);margin-top:12px}
+  .figs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  figure{margin:0;background:var(--surface2);padding:14px 16px 12px}
+  .flabel{font-family:"Noto Sans SC",sans-serif;font-size:12.5px;color:var(--faint);margin-bottom:10px;letter-spacing:1px}
+  .fcap{font-family:"Noto Sans SC",sans-serif;font-size:13.5px;line-height:1.55;color:var(--muted);margin-top:10px;text-align:center}
+  .infobox{padding:18px 20px 12px;font-family:"Noto Sans SC",sans-serif}
+  .infobox h4{font-size:15.5px;margin:0 0 6px;letter-spacing:1px}
+  .infobox table{width:100%;border-collapse:collapse;font-size:15px;line-height:1.6}
+  .infobox td{padding:9px 0;border-top:1px solid rgba(128,120,100,.25);vertical-align:top}
+  .infobox td:first-child{font-weight:700;white-space:nowrap;padding-right:14px}
+  .infobox p{font-size:15.5px;line-height:1.7;margin:4px 0 8px}
+  .infobox .note{font-size:13.5px;color:var(--muted);line-height:1.6}
+  .t-green{background:var(--t-green)} .t-blue{background:var(--t-blue)} .t-pink{background:var(--t-pink)} .t-purple{background:var(--t-purple)} .t-beige{background:var(--t-beige)}
+  /* mini components */
+  .opt{border:1px solid var(--line2);background:var(--surface);padding:10px 12px;font-family:"Noto Sans SC",sans-serif;font-size:14.5px;line-height:1.5;margin-bottom:8px}
+  .opt.hot{border:2px solid var(--green);background:var(--t-green);font-weight:700}
+  .opt .n{color:var(--faint);margin-right:6px}
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .duo .cell{background:var(--surface);border:1px solid var(--line2);padding:12px;font-family:"Noto Sans SC",sans-serif;font-size:14px;line-height:1.55;text-align:center}
+  .duo .cell b{display:block;font-size:16px;margin-bottom:4px}
+  .duo .cell .big{font-size:24px;font-weight:900;color:var(--green);display:block;white-space:nowrap}
+  .barchart{display:flex;align-items:flex-end;justify-content:space-around;height:148px;padding:6px 8px 0}
+  .bar{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+  .bar .val{font-family:"Noto Sans SC",sans-serif;font-size:15px;font-weight:700;color:var(--blue);margin-bottom:6px}
+  .bar .col{width:58px;background:var(--bar)}
+  .bar .yr{font-family:"Noto Sans SC",sans-serif;font-size:13px;color:var(--muted);margin-top:6px}
+  .spike{display:flex;align-items:flex-end;justify-content:center;gap:14px;height:128px;padding-top:8px}
+  .spike .scol{width:44px;background:var(--bar)}
+  .spike .scol.low{background:var(--bar-low)}
+  .spike .sval{font-family:"Noto Sans SC",sans-serif;font-size:12.5px;font-weight:700;color:var(--blue);text-align:center;margin-bottom:4px}
+  .verdict{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .verdict .v{background:var(--surface);border:1px solid var(--line2);padding:12px;font-family:"Noto Sans SC",sans-serif;font-size:14.5px;line-height:1.55}
+  .verdict .v b{display:block;font-size:15.5px;margin-bottom:4px}
+  .roles{display:flex;flex-direction:column;gap:8px}
+  .role{background:var(--surface);border:1px solid var(--line2);border-left:5px solid var(--red);padding:10px 12px;font-family:"Noto Sans SC",sans-serif;font-size:14.5px;line-height:1.5}
+  .role b{display:block;font-size:15.5px}
+  .hbars{display:flex;flex-direction:column;gap:14px;padding:8px 2px}
+  .hbar .lbl{font-family:"Noto Sans SC",sans-serif;font-size:13.5px;color:var(--muted);margin-bottom:5px}
+  .hbar .track{height:26px;background:var(--surface2);position:relative;border:1px solid var(--line)}
+  .hbar .fill{height:100%;background:var(--red)}
+  .hbar .fill.old{background:var(--bar-low)}
+  .hbar .num{font-family:"Noto Sans SC",sans-serif;font-size:14px;font-weight:700;position:absolute;right:8px;top:3px;color:var(--ink)}
+  .qgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+  .qgrid .q{background:var(--surface);border:1px solid var(--line2);padding:9px 2px;font-family:"Noto Sans SC",sans-serif;font-size:12.5px;line-height:1.45;text-align:center}
+  .funnel{display:flex;flex-direction:column;align-items:center;padding:2px 0}
+  .funnel .step{width:84%;background:var(--surface);border:1px solid var(--line2);padding:9px 10px;font-family:"Noto Sans SC",sans-serif;font-size:14.5px;text-align:center}
+  .funnel .step.hot{background:var(--purple);color:#fff;border-color:var(--purple);font-weight:700}
+  .funnel .step.hot2{background:var(--brick);color:#fff;border-color:var(--brick);font-weight:700}
+  .funnel .arr{font-size:13px;color:var(--faint);line-height:1.5}
+  .pipe{display:flex;flex-direction:column;gap:8px}
+  .pipe .p{background:var(--surface);border:1px solid var(--line2);padding:10px 12px;font-family:"Noto Sans SC",sans-serif;font-size:14.5px;text-align:center}
+  .pipe .p.hot{background:var(--olive);color:#fff;border-color:var(--olive);font-weight:700}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:6px 0}
+  .chip{background:var(--surface);border:1px solid var(--line2);border-radius:20px;padding:7px 14px;font-family:"Noto Sans SC",sans-serif;font-size:14.5px}
+  .chip.me{background:var(--olive);color:#fff;border-color:var(--olive);font-weight:700}
+  .tree{display:flex;flex-direction:column;align-items:center;gap:5px;padding:2px 0}
+  .tree .lvl{background:var(--surface);border:1px solid var(--line2);padding:9px 12px;font-family:"Noto Sans SC",sans-serif;font-size:14.5px;text-align:center;width:100%}
+  .tree .lvl.hot{background:var(--blue);color:#fff;border-color:var(--blue);font-weight:700}
+  .tree .arr{font-size:12px;color:var(--faint);line-height:1.2}
+  .bignums{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 0 4px}
+  .bignums .num{font-family:"Noto Sans SC",sans-serif;font-size:40px;font-weight:900;color:var(--blue);line-height:1.1;white-space:nowrap}
+  .bignums .lbl{font-family:"Noto Sans SC",sans-serif;font-size:14.5px;color:var(--muted)}
+  .bignums .sep{width:60px;border-top:1px solid var(--line2);margin:10px 0}
+  .bignum2{text-align:center;padding:14px 0 4px}
+  .bignum2 .num{font-family:"Noto Sans SC",sans-serif;font-size:clamp(26px,4vw,40px);font-weight:900;color:var(--brick);line-height:1.15}
+  .bignum2 .lbl{font-family:"Noto Sans SC",sans-serif;font-size:14.5px;color:var(--muted);margin-top:4px}
+  .rules3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .rules3 .r{background:var(--surface);border:1px solid var(--line2);padding:12px;font-family:"Noto Sans SC",sans-serif;font-size:14.5px;line-height:1.55}
+  .rules3 .r b{display:block;font-size:15.5px;margin-bottom:4px}
+  .roles3{display:flex;flex-direction:column;gap:8px}
+  .role3{background:var(--surface);border:1px solid var(--line2);padding:11px 12px;font-family:"Noto Sans SC",sans-serif;font-size:14.5px;line-height:1.5}
+  .role3 b{display:block;font-size:15.5px;color:var(--green)}
+  .timeline{padding:16px 6px 4px}
+  .timeline .tl-row{display:flex;align-items:center}
+  .timeline .dot{flex:none;width:15px;height:15px;border-radius:50%;background:var(--green)}
+  .timeline .dot.hollow{background:var(--surface);border:3px solid var(--green)}
+  .timeline .tl-line{flex:1;border-top:2px dashed var(--green)}
+  .timeline .tl-labels{display:flex;justify-content:space-between;margin-top:10px}
+  .timeline .pt{text-align:center;font-family:"Noto Sans SC",sans-serif;font-size:13.5px;line-height:1.5;width:118px}
+  .timeline .pt b{display:block;font-size:14.5px}
+  .flow2{display:flex;flex-direction:column;align-items:center;gap:6px;padding:4px 0 0}
+  .flow2 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+  .flow2 .f{background:var(--surface);border:1px solid var(--line2);padding:10px 8px;font-family:"Noto Sans SC",sans-serif;font-size:14.5px;text-align:center}
+  .flow2 .f.hot{background:var(--olive);color:#fff;border-color:var(--olive);font-weight:700;width:100%}
+  .flow2 .arr{font-size:14px;color:var(--faint);line-height:1.2}
+  .vs{display:flex;flex-direction:column;gap:10px}
+  .vs .v{border:1px solid var(--line2);padding:12px;font-family:"Noto Sans SC",sans-serif;font-size:14.5px;line-height:1.6;background:var(--surface)}
+  .vs .v.ok{background:var(--t-green)}
+  .vs .v.no{border-style:dashed}
+  .vs .v b{display:block;font-size:15.5px;margin-bottom:4px}
+  /* calculator */
+  .calc{margin-top:14px;background:var(--surface);border:1px solid var(--line);padding:18px 20px;font-family:"Noto Sans SC",sans-serif}
+  .calc h4{margin:0 0 4px;font-size:15.5px;letter-spacing:1px}
+  .calc p{font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 14px}
+  .calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .calc label{font-size:13px;color:var(--muted);display:block}
+  .calc input{width:100%;margin-top:6px;font:inherit;font-size:17px;font-weight:700;padding:9px 10px;border:1px solid var(--line2);background:var(--bg);color:var(--ink);border-radius:4px}
+  .calc-out{display:flex;gap:28px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+  .calc-out .o .n{font-size:30px;font-weight:900;color:var(--blue);line-height:1.1}
+  .calc-out .o .l{font-size:13.5px;color:var(--muted)}
+  /* prompt copy */
+  .copybtn{font-family:"Noto Sans SC",sans-serif;font-size:13px;padding:6px 12px;border:1px solid var(--line2);background:var(--surface);color:var(--ink);cursor:pointer;border-radius:4px;margin-top:8px}
+  .copybtn:active{transform:translateY(1px)}
+  .copied{font-family:"Noto Sans SC",sans-serif;font-size:13px;color:var(--green);margin-left:8px}
+  /* checklist */
+  .stages{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+  .stage{background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--purple);padding:18px 20px 0;display:flex;flex-direction:column}
+  .stage .snum{font-family:"Noto Sans SC",sans-serif;font-size:12.5px;letter-spacing:2px;color:var(--faint)}
+  .stage h4{font-size:27px;font-weight:900;margin:6px 0 14px}
+  .stage ul{list-style:none;margin:0;padding:0;flex:1}
+  .stage li{display:flex;gap:10px;font-family:"Noto Sans SC",sans-serif;font-size:15.5px;line-height:1.6;margin-bottom:12px;color:var(--ink2)}
+  .stage li .box{flex:none;width:17px;height:17px;border:2px solid var(--faint);margin-top:3px}
+  .stage li .x{flex:none;color:#e07856;font-weight:900;font-size:17px;line-height:1.4}
+  .stage .std{font-family:"Noto Sans SC",sans-serif;font-size:14px;line-height:1.55;padding:12px 14px;margin:6px -20px 0}
+  .stage.black{background:#1a1a1a;color:#f0ede6;border-color:#1a1a1a}
+  .stage.black h4{color:#f0ede6}.stage.black .snum{color:#a8a29a}.stage.black li{color:#e8e4db}.stage.black .std{color:#a8a29a}
+  @media (prefers-color-scheme: dark){ .stage.black{background:#0f0e0c;border-color:#0f0e0c} }
+  .check-note{font-family:"Noto Sans SC",sans-serif;font-size:13.5px;color:var(--faint);margin-top:14px}
+  .footer-line{text-align:center;font-size:clamp(19px,3vw,23px);font-weight:700;line-height:1.6;padding:32px 0 20px;border-top:1px solid var(--line);margin-top:44px}
+  .source{font-family:"Noto Sans SC",sans-serif;font-size:12.5px;line-height:1.75;color:var(--faint)}
+  .source a{color:var(--muted)}
+  .brand{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-top:16px}
+  .brand .name{font-size:clamp(18px,3vw,25px);font-weight:900;letter-spacing:.5px}
+  .brand .pg{font-family:"Noto Sans SC",sans-serif;font-size:13px;color:var(--faint)}
+  .hidden{display:none !important}
+  @media (max-width:820px){
+    section.chapter{grid-template-columns:1fr;gap:22px}
+    .keynums{grid-template-columns:1fr}
+    .figs{grid-template-columns:1fr}
+    .stages{grid-template-columns:1fr}
+    .calc-grid{grid-template-columns:1fr 1fr}
+    .rules3{grid-template-columns:1fr}
+    .verdict{grid-template-columns:1fr}
+    .infobox td:first-child{white-space:normal}
+    .toc a{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="wrap">
+
+  <div class="masthead"><span>创作者经济 · 实战手册</span><span>中文解读 · 全文一页</span></div>
+  <h1>Dan Koe：2027 年<br />最赚钱的 AI 生意</h1>
+  <p class="lede">Dan Koe 是创作者工具 Eden 的创始人。他认为，<b>2027 年一个人能做的最赚钱的 AI 生意，是为自己的品牌、或别人的品牌抓住注意力。</b>下面分三部分：为什么是注意力、他会怎么带一个客户上手，以及你在读者故事里的角色、去哪调研，最后附一张能直接照着做的执行清单。</p>
+
+  <div class="one-line">核心就一句话：<b>最赚钱的技能一直是抓住注意力。</b>软件再好、书再好、简历再漂亮都没用——没人知道你是谁、你能提供什么，别人凭什么付钱给你？</div>
+
+  <div class="keynums">
+    <div class="keynum"><div class="n">$13.9B → $43.9B</div><div class="l">美国品牌在创作者上的投入，2021 年到 2026 年（预测），5 年约 3 倍 · IAB 口径</div></div>
+    <div class="keynum"><div class="n">$10k–$75k / 月</div><div class="l">一人创意团队的报价区间：服务 1–3 个客户。前提是你够好、够练</div></div>
+    <div class="keynum"><div class="n">$2,500–$5,000 / 月</div><div class="l">第一个客户的目标报价：写 10 条帖子，每天发 10 条私信，30 天拿下</div></div>
+  </div>
+
+  <nav class="toc" aria-label="分部导航">
+    <div class="toc-row">
+      <button type="button" data-part="all" aria-pressed="true">全文</button>
+      <button type="button" data-part="p1" aria-pressed="false">一 · 注意力与市场</button>
+      <button type="button" data-part="p2" aria-pressed="false">二 · 访谈与第一个客户</button>
+      <button type="button" data-part="p3" aria-pressed="false">三 · 角色、调研与清单</button>
+      <a href="#s01">01 技能</a><a href="#s05">05 访谈</a><a href="#s07">07 内容地图</a><a href="#checklist">11 清单</a>
+    </div>
+  </nav>
+
+  <!-- ============ PART 1 ============ -->
+  <div data-block="p1">
+    <div class="part-head"><div class="pk">第一部分</div><h2>注意力、市场与团队</h2><p>为什么是注意力、市场有多大、品牌缺口在哪，以及什么是一人创意团队。</p></div>
+
+    <section class="chapter" id="s01">
+      <div class="sec-body">
+        <div class="kicker">01 / 技能</div>
+        <h3 style="color:var(--green)">注意力<br />决定一切</h3>
+        <p>他说，<b>最赚钱的技能一直是抓住注意力。</b>软件再好、书再好、简历再漂亮都没用：如果没人知道你是谁、你能提供什么，别人凭什么付钱给你？</p>
+        <ul class="dots"><li>注意力是有限的，而且只会越来越稀缺。</li><li>钱花了还能再赚，注意力花掉就回不来了。</li></ul>
+        <p class="tail">无论你做什么，能不能卖出去都由注意力决定。</p>
+      </div>
+      <div>
+        <div class="figs">
+          <figure><div class="flabel">图 1A</div>
+            <div class="opt"><span class="n">①</span>抱怨，什么都不做</div>
+            <div class="opt"><span class="n">②</span>提升技能，找更好的工作</div>
+            <div class="opt hot"><span class="n">③</span>开始创业，做一直想做的生意</div>
+            <div class="fcap">保障越少，三条路越清楚。绝大多数人会选 3。</div>
+          </figure>
+          <figure><div class="flabel">图 1B</div>
+            <div class="duo">
+              <div class="cell"><b>金钱</b><span class="big">能再赚</span>花了可以挣回来</div>
+              <div class="cell"><b>注意力</b><span class="big">回不来</span>花掉就没了</div>
+            </div>
+            <div class="fcap">为什么注意力越来越值钱。</div>
+          </figure>
+        </div>
+        <div class="infobox t-green"><h4>谁在为注意力买单 · 他的看法</h4>
+          <table>
+            <tr><td>你自己的生意</td><td>发内容是吸引付费受众的标配</td></tr>
+            <tr><td>初创公司</td><td>“创始人亲自营销”，就是创始人自己做品牌、自己发帖</td></tr>
+            <tr><td>大品牌</td><td>把数百万投进联盟和合作推广</td></tr>
+            <tr><td>他举的例子</td><td>Hormozi 的广告宣称，每月付给推广 Skool 的创作者超过 $1M</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="s02">
+      <div class="sec-body">
+        <div class="kicker">02 / 市场</div>
+        <h3 style="color:var(--purple)">成为创作者，雇创作者，或给创作者打工</h3>
+        <p>他的原话：<b>你要么成为创作者，要么付钱给创作者，要么被创作者雇去干活。</b>现在注意力在社交媒体上，不在广播、电视或新闻上。</p>
+        <p>他三边都待过：当过创作者，给创作者打过工，也付过钱给创作者。</p>
+        <ul class="dots"><li>品牌捧一条 Reel 或一个 YouTube 帖子，个人位置要付几千美元。</li><li>而其中 90% 根本不来效果。</li></ul>
+        <p class="tail">跟着注意力走，钱自然会来。</p>
+      </div>
+      <div>
+        <div class="figs">
+          <figure><div class="flabel">图 2A</div>
+            <div class="barchart">
+              <div class="bar"><div class="val">$13.9B</div><div class="col" style="height:42px"></div><div class="yr">2021</div></div>
+              <div class="bar"><div class="val">$43.9B</div><div class="col" style="height:124px"></div><div class="yr">2026*</div></div>
+            </div>
+            <div class="fcap">美国品牌在创作者上的投入，5 年约 3 倍。</div>
+          </figure>
+          <figure><div class="flabel">图 2B</div>
+            <div class="barchart">
+              <div class="bar"><div class="val">$250B</div><div class="col" style="height:66px"></div><div class="yr">2023</div></div>
+              <div class="bar"><div class="val">$480B</div><div class="col" style="height:124px"></div><div class="yr">2027*</div></div>
+            </div>
+            <div class="fcap">全球创作者经济规模，高盛预测。</div>
+          </figure>
+        </div>
+        <div class="infobox t-blue"><h4>他的数字 · 出处核对</h4>
+          <table>
+            <tr><td>美国创作者广告投入</td><td>$13.9B（2021）到 $43.9B（2026*），与 IAB 一致；2026 年为预测值</td></tr>
+            <tr><td>创作者广告收入，2025</td><td>约 $185B，首次超过传统媒体；口径与 WPP Media 预测一致</td></tr>
+            <tr><td>全球创作者经济</td><td>到 2027 年从 $250B 涨到 $480B，高盛预测</td></tr>
+            <tr><td>Hormozi 与 Skool</td><td>每月付给创作者超过 $1M，来自他看到的广告，未核实</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="s03">
+      <div class="sec-body">
+        <div class="kicker">03 / 品牌</div>
+        <h3 style="color:var(--green)">播放量<br />不等于品牌</h3>
+        <p>你可以精通注意力，却依然没抓住它。<b>一条帖子 100 万播放，其他帖子只有一千，这没用。</b>这说明内容流行，但品牌不存在。</p>
+        <p>大多数人想每条都爆，结果大多失败。他的内容方案：打造一个让人忍不住想追下去的内容世界。</p>
+        <ul class="dots"><li>两样都要：好内容，加真正的品牌。</li><li>大多数人把 AI 当成一夜暴富的脚本机器。</li></ul>
+        <p class="tail">打造一个世界，而不是一条走运的帖子。</p>
+      </div>
+      <div>
+        <div class="figs">
+          <figure><div class="flabel">图 3A</div>
+            <div class="spike">
+              <div><div class="sval">100 万</div><div class="scol" style="height:102px"></div></div>
+              <div><div class="sval">1 千</div><div class="scol low" style="height:8px"></div></div>
+              <div><div class="sval">1 千</div><div class="scol low" style="height:8px"></div></div>
+              <div><div class="sval">1 千</div><div class="scol low" style="height:8px"></div></div>
+            </div>
+            <div class="fcap">一次爆点，然后归零。示意图。</div>
+          </figure>
+          <figure><div class="flabel">图 3B</div>
+            <div class="verdict">
+              <div class="v"><b>内容流行，没品牌</b>一条爆了，之后每条一千播放。停更了，没人问他去哪了。</div>
+              <div class="v"><b>一个内容世界</b>人们一直追下去，因为品牌给了他们回来的理由。</div>
+            </div>
+            <div class="fcap">他眼里，几乎没人做品牌这档事。</div>
+          </figure>
+        </div>
+        <div class="infobox t-blue"><h4>两则判语 · 本页摘编</h4>
+          <table>
+            <tr><td>内容流行，没品牌</td><td>一条爆了，之后每条一千播放。如果停更，人们不会问他去哪了。</td></tr>
+            <tr><td>一个内容世界</td><td>人们会一直追下去，因为品牌给了他们回来的理由。</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="s04">
+      <div class="sec-body">
+        <div class="kicker">04 / 团队</div>
+        <h3 style="color:var(--red)">一人<br />创意团队</h3>
+        <p>一个人能起步的生意有两种形式。<b>成为你自己的创意团队：</b>品牌、受众、产品、邮件列表，就算有 AI 也是全部工作。<b>或成为别人的创意团队，</b>服务那些没有创意能力的创始人和创作者。</p>
+        <p>不管哪种，你都是创意总监，也就是说要身兼三职。</p>
+        <ul class="dots"><li>他的报价区间：服务 1 到 3 个客户，每月 $10k 到 $75k。</li><li>他补充说，前提是你够好、够练。这不是一夜暴富。</li></ul>
+        <p class="tail">做创意总监，为你自己的品牌，或为别人的。</p>
+      </div>
+      <div>
+        <div class="figs">
+          <figure><div class="flabel">图 4A</div>
+            <div class="roles">
+              <div class="role"><b>品牌策略师</b>定位与 perception：不只追趋势和爆款</div>
+              <div class="role"><b>内容策略师</b>研究什么内容表现好，决定下一篇发什么</div>
+              <div class="role"><b>内容写手与社媒经理</b>起草、排期、发布，对齐品牌方向</div>
+            </div>
+            <div class="fcap">一个人借助 AI 兼三职。</div>
+          </figure>
+          <figure><div class="flabel">图 4B</div>
+            <div class="hbars">
+              <div class="hbar"><div class="lbl">以前 · 审稿改稿</div><div class="track"><div class="fill old" style="width:100%"></div><div class="num">12 小时 / 天</div></div></div>
+              <div class="hbar"><div class="lbl">现在 · 审稿改稿</div><div class="track"><div class="fill" style="width:33%"></div><div class="num">4 小时 / 天</div></div></div>
+            </div>
+            <div class="fcap">一家代理公司讲的工作量变化。</div>
+          </figure>
+        </div>
+        <div class="infobox t-pink"><h4>代理公司对他说 · 他的转述</h4>
+          <table>
+            <tr><td>团队不设，活更多</td><td>“还没裁人，但不用扩招就能接更多活，因为每个人产出都上去了。”</td></tr>
+            <tr><td>创始人没时间</td><td>“他们有团队要管、有生意要跑，没精力想内容。”</td></tr>
+            <tr><td>AI 起草，人来把关</td><td>“AI 写不出最好的帖子，但能调研、理解策略、起草接近成品的稿子。”</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ PART 2 ============ -->
+  <div data-block="p2">
+    <div class="part-head"><div class="pk">第二部分</div><h2>访谈、内容地图与第一个客户</h2><p>如果你是他的客户，他会怎么带你走一遍：一场挖出思想标签的访谈、一个装着最佳内容的知识库、一张有调研支撑的内容地图，以及靠先干活赢来的第一个客户。</p></div>
+
+    <section class="chapter" id="s05">
+      <div class="sec-body">
+        <div class="kicker">05 / 第 1 步</div>
+        <h3 style="color:var(--purple)">访谈出你的<br />思想标签</h3>
+        <p>带客户，或者带你自己，<b>录一场访谈，把文字稿放在 AI 能调用的地方，</b>或者把他的问题贴进 Claude，让它把答案从你身上问出来，整理成一份品牌文档。</p>
+        <p>这些答案就是你接下来 6 到 12 个月要发的内容。一条帖子讲不完，这是长期的事。</p>
+        <ul class="dots"><li>九组问题，共 28 个。</li><li>要他们的原话，不要概括。</li></ul>
+        <p class="tail">先有背景，再有内容。</p>
+      </div>
+      <div>
+        <div class="figs">
+          <figure><div class="flabel">图 5A</div>
+            <div class="qgrid">
+              <div class="q">你帮助谁</div><div class="q">你的故事</div><div class="q">谁塑造了你</div>
+              <div class="q">支柱与视角</div><div class="q">使命与信念</div><div class="q">你反对什么</div>
+              <div class="q">为什么是现在</div><div class="q">带他们去哪</div><div class="q">规则与用词</div>
+            </div>
+            <div class="fcap">他的九组问题，共 28 个，按组分。</div>
+          </figure>
+          <figure><div class="flabel">图 5B</div>
+            <div class="funnel">
+              <div class="step">采访记录</div><div class="arr">↓</div>
+              <div class="step">文字稿</div><div class="arr">↓</div>
+              <div class="step">品牌文档</div><div class="arr">↓</div>
+              <div class="step hot">6–12 个月的内容</div>
+            </div>
+            <div class="fcap">答案去哪儿。</div>
+          </figure>
+        </div>
+        <div class="infobox t-purple"><h4>他的个人标签 · 六问示例</h4>
+          <table>
+            <tr><td>你帮助谁</td><td>他们跟朋友抱怨时会怎么说？用他们的原话。</td></tr>
+            <tr><td>你的故事</td><td>哪个瞬间让你的处境变了，不多不少？</td></tr>
+            <tr><td>你的信念</td><td>你相信什么，是这个领域大多数人不信的？</td></tr>
+            <tr><td>你反对什么</td><td>如果可以，你想消灭哪个思维习惯？</td></tr>
+            <tr><td>为什么是现在</td><td>世界上发生了什么变化，大多数人还没注意到？</td></tr>
+            <tr><td>他们的未来</td><td>他们会在自己的简介里自豪地怎么称呼自己？</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="s06">
+      <div class="sec-body">
+        <div class="kicker">06 / 第 2 步</div>
+        <h3 style="color:var(--olive)">挖出最好的<br />内容</h3>
+        <p>他不认为 AI 能复制一个人的声音，总有一点不对劲。<b>所以目标不是自动化，而是建一个知识库，</b>装下这个人所有独特的东西，让草稿带着他的影子交出去。</p>
+        <p>还没开始发帖？列出塑造你思考方式的 5 到 10 个人，对他们提同一个提示词。</p>
+        <ul class="dots"><li>你最好的想法，是你对所吸收观点的解释。</li><li>他自己的组合：Naval、Leo Gura、Mihaly C、Steven Kotler、Ken Wilber。</li></ul>
+        <p class="tail">收集声音，别仿造。</p>
+      </div>
+      <div>
+        <div class="figs">
+          <figure><div class="flabel">图 6A</div>
+            <div class="pipe">
+              <div class="p">最好的内容</div>
+              <div class="p">每个平台 10–20 条热门</div>
+              <div class="p">观点、声音、世界观</div>
+              <div class="p hot">内容文档</div>
+            </div>
+            <div class="fcap">他的第 2 步：内容流水线。</div>
+          </figure>
+          <figure><div class="flabel">图 6B</div>
+            <div class="chips">
+              <span class="chip">Naval</span><span class="chip">Leo Gura</span><span class="chip">Mihaly C</span>
+              <span class="chip">Kotler</span><span class="chip">Wilber</span><span class="chip me">你的生活</span>
+            </div>
+            <div class="fcap" style="margin-top:12px">影响你的人加上你的生活，混成你自己的观点。</div>
+          </figure>
+        </div>
+        <div class="infobox t-beige"><h4>可以用的提示词 · 大意</h4>
+          <p id="prompt1">从 [@handles] 抓取最新的内容：他们所在的每个平台各 10–20 条。然后记下让他们独特的核心理念、声音里有个性地方，再拼一拼他们有什么能把别人聚到一起的世界观或成就。</p>
+          <p class="note">注：他用 Eden 来做；只要你能把帖子爬下来，用什么都行。</p>
+          <button type="button" class="copybtn" data-copy="prompt1">复制这段提示词</button><span class="copied" hidden>已复制</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="s07">
+      <div class="sec-body">
+        <div class="kicker">07 / 第 3 步</div>
+        <h3 style="color:var(--blue)">规划六个月的<br />内容</h3>
+        <p>研究什么内容表现好，很多创作者会觉得别扭。他的说法是：<b>你是在收集参考，就像艺术家找灵感，提炼模式和原理，不照抄。</b></p>
+        <p>把品牌文档和内容文档放进一个提示词，让它出一张有调研支撑的内容地图，并结合过去 6 到 12 个月里有效的内容。</p>
+        <ul class="dots"><li>他说这张图能帮你用大约六个月。</li><li>带着你的背景从地图起草，再检查每条帖子的结构。</li></ul>
+        <p class="tail">调研是参考，不是模仿。</p>
+      </div>
+      <div>
+        <div class="figs">
+          <figure><div class="flabel">图 7A</div>
+            <div class="tree">
+              <div class="lvl hot">支柱 · 3–4 个</div><div class="arr">↓</div>
+              <div class="lvl">话题 · 每个支柱 5–7 个</div><div class="arr">↓</div>
+              <div class="lvl">点子 · 每个话题 5–10 个</div><div class="arr">↓</div>
+              <div class="lvl">角度 · 每个点子 4–5 个</div>
+            </div>
+            <div class="fcap">他的内容地图，画成一棵树。</div>
+          </figure>
+          <figure><div class="flabel">图 7B</div>
+            <div class="bignums">
+              <div class="num">75–280</div><div class="lbl">点子</div>
+              <div class="sep"></div>
+              <div class="num">300–1,400</div><div class="lbl">角度</div>
+            </div>
+            <div class="fcap">按他的区间，点子和角度加起来有多少。</div>
+          </figure>
+        </div>
+        <div class="infobox t-blue"><h4>地图，一层一层看</h4>
+          <table>
+            <tr><td>支柱</td><td>3–4 个大主题，用你自己的视角去看</td></tr>
+            <tr><td>话题</td><td>每个支柱 5–7 个，基于已经验证的点子</td></tr>
+            <tr><td>点子</td><td>每个话题 5–10 个，大概率表现好</td></tr>
+            <tr><td>角度</td><td>每个点子 4–5 个，一个点子能变成几条帖子</td></tr>
+          </table>
+        </div>
+        <div class="calc">
+          <h4>自己算一算 · 内容地图有多大</h4>
+          <p>改下面的数字，结果按「支柱 × 话题 × 点子」和再乘角度算出来。默认值取他给的区间中点附近。</p>
+          <div class="calc-grid">
+            <label>支柱数<input type="number" id="cPillars" value="3" min="1" max="10" /></label>
+            <label>每支柱话题<input type="number" id="cTopics" value="6" min="1" max="20" /></label>
+            <label>每话题点子<input type="number" id="cIdeas" value="7" min="1" max="30" /></label>
+            <label>每点子角度<input type="number" id="cAngles" value="4" min="1" max="10" /></label>
+          </div>
+          <div class="calc-out">
+            <div class="o"><div class="n" id="outIdeas">126</div><div class="l">个点子</div></div>
+            <div class="o"><div class="n" id="outAngles">504</div><div class="l">个角度（可发帖的切入点）</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="s08">
+      <div class="sec-body">
+        <div class="kicker">08 / 第一个客户</div>
+        <h3 style="color:var(--brick)">被雇之前<br />先把活干了</h3>
+        <p>几年前，JK Molina 主动私信了他 10 条替 Dan 写好的帖子，没人要求：拿去发，喜欢的话就用，或者写个推荐。他管这叫<b>“无痛省力的破冰”打法。</b></p>
+        <p>给一个梦想客户把整套流程跑一遍。写 10 条帖子、打磨好，每天发 10 条私信。他说很难相信你一个月还拿不下第一个客户。</p>
+        <ul class="dots"><li>私信没回音，就公开自荐。</li><li>有一条 Reel 专门向 Grant Cardone 自荐，换来回复：“来找我，我卡住了。”</li></ul>
+        <p class="tail">在他们开口之前，先把活给他们看。</p>
+      </div>
+      <div>
+        <div class="figs">
+          <figure><div class="flabel">图 8A</div>
+            <div class="funnel">
+              <div class="step">10 条帖子</div><div class="arr">↓</div>
+              <div class="step">每天 10 条私信</div><div class="arr">↓</div>
+              <div class="step">30 天</div><div class="arr">↓</div>
+              <div class="step hot2">第 1 个客户</div>
+            </div>
+            <div class="fcap">他的外联算术：客户就是这么来的。</div>
+          </figure>
+          <figure><div class="flabel">图 8B</div>
+            <div class="bignum2"><div class="num">$2,500–$5,000<span style="font-size:20px"> / 月</span></div><div class="lbl">首个客户的目标报价区间</div></div>
+            <div class="fcap">他说这份工作能值多少。</div>
+          </figure>
+        </div>
+        <div class="infobox t-pink"><h4>这套打法的三条</h4>
+          <div class="rules3">
+            <div class="r"><b>先做访谈</b>留下文字稿，做成品牌文档。</div>
+            <div class="r"><b>研究影响你的人</b>列出塑造你的 5–10 个人。</div>
+            <div class="r"><b>先把活干了</b>写 10 条帖子，再开口谈合作。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ PART 3 ============ -->
+  <div data-block="p3">
+    <div class="part-head"><div class="pk">第三部分</div><h2>你的故事、你的调研与你的清单</h2><p>补上创始人常跳过的两个缺口：你在读者故事里的角色，以及去哪调研，然后把整份指南变成一张能照着做的清单。</p></div>
+
+    <section class="chapter" id="s09">
+      <div class="sec-body">
+        <div class="kicker">09 / 你的故事</div>
+        <h3 style="color:var(--green)">选好你在他们<br />故事里的角色</h3>
+        <p>他访谈里有三个问题比看上去更管用。<b>在他们的故事里你是什么定位？</b>是向导，是记录这段旅程的人，还是走出来后带着地图回来的人。</p>
+        <p>你要带他们去哪？描述他们跟随你五年后的生活，以及他们会用自己的语言怎么称呼自己。</p>
+        <ul class="dots"><li>把你反对的东西定为一种习惯或观念，永远不针对某个人或公司。</li><li>给你自己的想法、方法和问题起名字。</li></ul>
+        <p class="tail">发第一条帖子前，先想清楚你的角色。</p>
+      </div>
+      <div>
+        <div class="figs">
+          <figure><div class="flabel">图 9A</div>
+            <div class="roles3">
+              <div class="role3"><b>向导</b>带着他们走你走过的路</div>
+              <div class="role3"><b>记录者</b>记录这段旅程，边走边写</div>
+              <div class="role3"><b>带着地图回来的人</b>走出来了，回来带路</div>
+            </div>
+            <div class="fcap">他的三种角色，选一个，别换。</div>
+          </figure>
+          <figure><div class="flabel">图 9B</div>
+            <div class="timeline">
+              <div class="tl-row"><div class="dot hollow"></div><div class="tl-line"></div><div class="dot"></div></div>
+              <div class="tl-labels">
+                <div class="pt"><b>今天</b>他们的问题<br />你的起点</div>
+                <div class="pt"><b>五年后</b>他们跟随你<br />五年后的生活</div>
+              </div>
+            </div>
+            <div class="fcap">他们的问题与你的轨迹，从今天到五年后。</div>
+          </figure>
+        </div>
+        <div class="infobox t-blue"><h4>你的品牌词典 · 来自他的资料</h4>
+          <table>
+            <tr><td>规则</td><td>你的理想读者每天会执行和践行的 5–12 件事</td></tr>
+            <tr><td>名字</td><td>给你的想法、方法或问题起名字，各自附上含义</td></tr>
+            <tr><td>敌人</td><td>一种生活方式、迷思或习惯，不是某个人或公司</td></tr>
+            <tr><td>使命</td><td>一句话说清楚你常做什么</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="s10">
+      <div class="sec-body">
+        <div class="kicker">10 / 你的调研</div>
+        <h3 style="color:var(--olive)">去你不发帖的<br />平台调研</h3>
+        <p>他文中一个细节值得单独拎出来：<b>最好去你不发帖的平台调研，拿到独特的点子。</b>在一个平台上看见的东西，搬到你的平台可能还很新。</p>
+        <p>他是在推荐 Eden 时说的这点：抓取工具看不到跨平台的内容。不管你用什么工具，这个原理都成立。</p>
+        <ul class="dots"><li>提炼模式和原理，不照抄。</li><li>对照当下最有效的内容，检查每份草稿的结构。</li></ul>
+        <p class="tail">从隔壁平台借鉴。</p>
+      </div>
+      <div>
+        <div class="figs">
+          <figure><div class="flabel">图 10A</div>
+            <div class="flow2">
+              <div class="grid2"><div class="f">YouTube</div><div class="f">Substack</div><div class="f">Reels</div><div class="f">播客</div></div>
+              <div class="arr">↓</div>
+              <div class="f hot">你的平台</div>
+            </div>
+            <div class="fcap">广泛调研，在你发帖的地方发帖。</div>
+          </figure>
+          <figure><div class="flabel">图 10B</div>
+            <div class="vs">
+              <div class="v ok"><b>参考 ✓</b>模式 · 原理 · 结构</div>
+              <div class="v no"><b>照抄 ✗</b>同一条文案 · 同一个钩子 · 同一条视频</div>
+            </div>
+            <div class="fcap">他“收集参考”的规则，画出来。</div>
+          </figure>
+        </div>
+        <div class="infobox t-beige"><h4>他的调研地图提示词 · 大意</h4>
+          <p id="prompt2">做一张有调研支撑的内容地图：3–4 个独特且宽泛的内容支柱，每个支柱下 5–7 个话题，这些话题基于正在变现的点子，并通过我自己独特视角、依据品牌文档和内容文档。每个话题下面分出 5–10 个大概率表现好的点子，每个点子分出 4–5 个角度。</p>
+          <p class="note">注：提示词后半段是让模型用 Eden 调研什么内容表现好；你验证过的任何调研来源都可以。</p>
+          <button type="button" class="copybtn" data-copy="prompt2">复制这段提示词</button><span class="copied" hidden>已复制</span>
+        </div>
+      </div>
+    </section>
+
+    <div id="checklist" style="scroll-margin-top:76px;border-top:1px solid var(--line);padding-top:36px">
+      <div class="kicker">11 / 执行</div>
+      <h3 style="color:var(--purple);font-size:clamp(30px,4.4vw,46px);font-weight:900;margin:0 0 12px">创始人执行清单</h3>
+      <p style="font-size:17px;line-height:1.75;color:var(--ink2);max-width:820px;margin:0">他的整套流程，按你实际执行的顺序排列。从上往下做；事情真做完了再在心里打勾。第 5 阶段只适用于为别人做创意业务的创始人。</p>
+      <div class="stages">
+        <div class="stage" style="border-top-color:var(--purple)">
+          <div class="snum">第 1 阶段</div><h4 style="color:var(--purple)">定下打法</h4>
+          <ul>
+            <li><span class="box"></span>选一个：做你自己的品牌，或做别人的创意团队。</li>
+            <li><span class="box"></span>把你服务的人描述成一个真实的人。</li>
+            <li><span class="box"></span>用一句话写下你的使命。</li>
+            <li><span class="box"></span>选好你在他们故事里的角色。</li>
+          </ul>
+          <div class="std t-purple"><b>做完的标准：</b>你能用两句话讲清它为谁而做、为什么是你。</div>
+        </div>
+        <div class="stage" style="border-top-color:var(--brick)">
+          <div class="snum">第 2 阶段</div><h4 style="color:var(--brick)">搭好背景</h4>
+          <ul>
+            <li><span class="box"></span>回答他的 28 个问题，录成通话，或者让 Claude 来采访你。</li>
+            <li><span class="box"></span>把答案写成品牌文档。</li>
+            <li><span class="box"></span>在平台挑出你最好的 10–20 条帖子；如果你是新人，就挑 5–10 个影响你的人。</li>
+            <li><span class="box"></span>把观点、声音和世界观记进内容文档。</li>
+          </ul>
+          <div class="std t-pink"><b>做完的标准：</b>两份文档都在，而且你的 AI 能读到。</div>
+        </div>
+        <div class="stage" style="border-top-color:var(--green)">
+          <div class="snum">第 3 阶段</div><h4 style="color:var(--green)">调研与规划</h4>
+          <ul>
+            <li><span class="box"></span>收集参考，包括不发帖的平台。</li>
+            <li><span class="box"></span>规划 3–4 个支柱、5–7 个话题、5–10 个点子、4–5 个角度。</li>
+            <li><span class="box"></span>对照过去 6–12 个月的表现，检查每个话题。</li>
+            <li><span class="box"></span>把地图放在你起草的地方。</li>
+          </ul>
+          <div class="std t-green"><b>做完的标准：</b>你手里有大约六个月的点子。</div>
+        </div>
+        <div class="stage" style="border-top-color:var(--olive)">
+          <div class="snum">第 4 阶段</div><h4 style="color:var(--olive)">起草与发布</h4>
+          <ul>
+            <li><span class="box"></span>用 AI 起草，把两份文档都作为背景。</li>
+            <li><span class="box"></span>每份草稿发出前都亲手重写。</li>
+            <li><span class="box"></span>对照当下有效的内容，检查每条帖子的结构。</li>
+            <li><span class="box"></span>看你普通帖子的播放量，不看最好的那条。</li>
+          </ul>
+          <div class="std t-beige"><b>做完的标准：</b>你的平均播放量在涨，而不只是偶尔一个爆款。</div>
+        </div>
+        <div class="stage" style="border-top-color:var(--navy)">
+          <div class="snum">第 5 阶段</div><h4 style="color:var(--navy)">拿下第一个客户</h4>
+          <ul>
+            <li><span class="box"></span>列 10 个梦想客户：忙碌的创始人、创作者，或者卡住的人。</li>
+            <li><span class="box"></span>对其中一个跑一遍流程，写 10 条帖子。</li>
+            <li><span class="box"></span>发出去之前先打磨好。</li>
+            <li><span class="box"></span>每天带着作品发 10 条私信，私信没回音，就公开自荐。</li>
+          </ul>
+          <div class="std t-blue"><b>做完的标准：</b>一个月拿下一个客户，这是他的标准。</div>
+        </div>
+        <div class="stage black">
+          <div class="snum">附注</div><h4>该避开什么</h4>
+          <ul>
+            <li><span class="x">✕</span>别把它当一夜暴富。</li>
+            <li><span class="x">✕</span>别指望每条都爆。</li>
+            <li><span class="x">✕</span>别让 AI 在没有方向和数据的情况下狂写帖子。</li>
+            <li><span class="x">✕</span>别指望一条帖子撑起品牌：按 6–12 个月规划。</li>
+          </ul>
+          <div class="std">每一条都是他文中的一个失败模式。</div>
+        </div>
+      </div>
+      <p class="check-note">步骤与数字出自原文；每阶段“做完的标准”为本页整理。</p>
+    </div>
+  </div>
+
+  <div class="footer-line">注意力是技能，品牌是留住它的东西。<br />这是一场长期游戏：背景搭一次，之后每条帖子都更容易写，也更难被抄。</div>
+  <p class="source">来源：Dan Koe（@thedankoe）《The most lucrative AI business to start in 2027》，X 长文章，2026 年 11 月 3 日（美东时间）· <a href="https://x.com/thedankoe/status/2117664712532123680?a=i8JpPSAeVq111BaXjZk&s=46" target="_blank" rel="noopener">原文链接</a>；Dan Koe 为创作者工具 Eden 创始人，文中多次提到 Eden。数字来源：高盛、IAB；创作者广告收入口径与 WPP Media 预测一致；Hormozi 与 Skool 每月 $1M+ 来自他看到的广告，未核实。* 为预测值。本页为中文解读，图表为示意；提示词为大意转述。</p>
+  <div class="brand"><span class="name">DAN KOE · 2027 年最赚钱的 AI 生意</span><span class="pg">中文解读 · 全文</span></div>
+</div>
+
+<script>
+(function(){
+  // Part filter
+  var btns = document.querySelectorAll('.toc button[data-part]');
+  var blocks = document.querySelectorAll('[data-block]');
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      var part = b.getAttribute('data-part');
+      btns.forEach(function(x){ x.setAttribute('aria-pressed', x===b ? 'true' : 'false'); });
+      blocks.forEach(function(bl){
+        bl.classList.toggle('hidden', part !== 'all' && bl.getAttribute('data-block') !== part);
+      });
+      window.scrollTo({top: document.querySelector('.toc').offsetTop - 4, behavior:'smooth'});
+    });
+  });
+  // Progress bar
+  var bar = document.getElementById('progress');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  // Calculator
+  function num(id){ var v = parseFloat(document.getElementById(id).value); return isFinite(v) && v > 0 ? v : 0; }
+  function calc(){
+    var ideas = num('cPillars') * num('cTopics') * num('cIdeas');
+    document.getElementById('outIdeas').textContent = ideas.toLocaleString('en-US');
+    document.getElementById('outAngles').textContent = (ideas * num('cAngles')).toLocaleString('en-US');
+  }
+  ['cPillars','cTopics','cIdeas','cAngles'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', calc);
+  });
+  calc();
+  // Copy prompts
+  document.querySelectorAll('.copybtn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var text = document.getElementById(btn.getAttribute('data-copy')).textContent.trim();
+      var done = btn.parentElement.querySelector('.copied');
+      function show(){ if(done){ done.hidden = false; setTimeout(function(){ done.hidden = true; }, 1800); } }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(show).catch(show);
+      } else {
+        var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta);
+        ta.select(); try { document.execCommand('copy'); } catch(e){} document.body.removeChild(ta); show();
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
